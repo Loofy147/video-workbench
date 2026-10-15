@@ -101,10 +101,12 @@
         <section id="artifacts-panel" class="artifacts-panel" aria-labelledby="artifacts-heading" hidden>
           <div class="panel-heading"><div><p class="eyebrow">OUTPUTS</p><h2 id="artifacts-heading">Campaign artifacts</h2></div><span id="render-status-tag" class="status-pill">Draft</span></div>
           <div class="artifact-links">
+            <a id="pack-link" href="#" download>Download complete draft pack (.zip)</a>
             <a id="brief-link" href="#">Download brief.md</a>
             <a id="campaign-link" href="#">Download campaign.json</a>
             <a id="provenance-link" href="#" hidden>Download render provenance</a>
           </div>
+          <p class="muted small">The draft pack includes the current brief and campaign manifest. After a successful render it also includes the watermarked MP4 and provenance sidecar.</p>
           <div id="video-container" class="video-container" hidden>
             <video id="rendered-video" controls preload="metadata"></video>
             <a id="video-link" href="#" download>Download watermarked MP4</a>
