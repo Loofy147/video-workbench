@@ -3,6 +3,7 @@ import json
 import shutil
 import subprocess
 import sys
+import zipfile
 import tempfile
 import unittest
 from pathlib import Path
@@ -165,6 +166,17 @@ class ProjectPersistenceTests(unittest.TestCase):
         self.assertEqual(len(loaded["version_history"]), 2)
         self.assertEqual(app.list_projects()[0]["id"], project_id)
 
+        pack_path = app.build_draft_pack(project_id)
+        with zipfile.ZipFile(pack_path) as pack:
+            names = set(pack.namelist())
+            self.assertTrue({"brief.md", "campaign.json", "PACK-STATUS.txt"}.issubset(names))
+            self.assertFalse(any(name.endswith(".mp4") for name in names))
+            status = pack.read("PACK-STATUS.txt").decode("utf-8")
+            self.assertIn("NOT FOR PUBLICATION", status)
+            self.assertIn("Rendered MP4 included: no", status)
+            campaign_pack = json.loads(pack.read("campaign.json"))
+            self.assertEqual(campaign_pack["project"]["title"], "Edited campaign")
+
     def test_render_records_technical_result_without_unblocking_publication(self):
         created = app.create_project(valid_plan())
         project_id = created["project"]["id"]
@@ -206,6 +218,8 @@ class BrowserAssetContractTests(unittest.TestCase):
         self.assertIn('<script src="/assets/app.js" defer></script>', html)
         self.assertIn('href="/assets/styles.css"', html)
         self.assertIn('id="claim-list"', html)
+        self.assertIn('id="pack-link"', html)
+        self.assertIn("files/pack", script)
         self.assertIn("claims_evidence", script)
         self.assertIn("savedPlanSignature", script)
         self.assertIn("Save edits before rendering", script)
@@ -263,6 +277,12 @@ class BrowserRendererIntegrationTests(unittest.TestCase):
         self.assertIn("NOT FOR PUBLICATION", json.loads(
             (project_dir / "campaign-v1.json").read_text(encoding="utf-8")
         )["output"]["watermark_text"])
+        pack_path = app.build_draft_pack(project_id)
+        with zipfile.ZipFile(pack_path) as pack:
+            names = set(pack.namelist())
+            self.assertTrue({"brief.md", "campaign.json", "draft-v1.mp4", "draft-v1.mp4.manifest.json", "PACK-STATUS.txt"}.issubset(names))
+            self.assertIn("Rendered MP4 included: yes", pack.read("PACK-STATUS.txt").decode("utf-8"))
+            self.assertEqual(json.loads(pack.read("campaign.json"))["claims_evidence"], [])
 
 
 if __name__ == "__main__":
