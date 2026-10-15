@@ -46,11 +46,12 @@
 - [x] Draft and save an editable Markdown brief and versioned JSON render manifest.
 - [x] Submit the current saved campaign version through the product-owned deterministic renderer.
 - [x] Retain the actual renderer result summary, checksum/media properties, validation status, and release blockers.
+- [x] Export a version-scoped draft ZIP with the current brief, campaign manifest, `PACK-STATUS.txt`, and (after render) the watermarked MP4 plus provenance sidecar.
 - [x] Add a structured manual claim/evidence ledger with documented-source, direct-observation, inference, and unverified statuses; require a reference/note for the first two and preserve entries in the brief and render manifest.
 - [ ] Add claim discovery/mapping across all brief/storyboard copy and flag factual statements omitted from the manual ledger. Ledger references are not independently verified.
 - [ ] Add safe asset intake with file-size/type limits, media probing, provenance capture, rights policy, and approved local asset references.
 - [ ] Implement reviewer identity and authority, authenticated review/approval history, and an immutable decision trail before any unwatermarked or publishable release path exists.
-- [ ] Export a reviewed pack containing brief, script/scene outline, captions/copy, video, and relevant output metadata.
+- [ ] Export a reviewed pack containing brief, script/scene outline, captions/copy, video, and relevant output metadata. The current ZIP is explicitly a draft pack and does not satisfy this gate.
 - [ ] Validate the workflow against the live ContribQuest product using distinct owner/reviewer roles and genuine source evidence; record the walkthrough before producing public product claims.
 
 **Exit gate:** A reviewer can start from the actual ContribQuest offering, review the planning artifacts, render and play an MP4 from permitted inputs, inspect provenance and output validation, and export the complete pack. A mock or storyboard alone does not satisfy the real-video acceptance gate.
