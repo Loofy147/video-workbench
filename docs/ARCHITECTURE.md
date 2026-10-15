@@ -13,7 +13,7 @@ This is an internal company-use workbench first. It should support related busin
 1. **Product interface** — company/project context, brief and concept editing, review/approval, job progress, artifact inspection, and export. The first interface technology is undecided.
 2. **Application orchestration** — validates requests, checks required approvals, applies policy and defaults, creates jobs, dispatches work, handles cancellation/retry, and reports results.
 3. **Domain contracts** — typed representations for projects, business briefs, concepts/scripts, review states, capabilities, jobs, attempts, artifacts, errors, and execution metadata. These contracts should not import a specific provider SDK.
-4. **Provider/runtime adapters** — translate the approved product request to a selected runtime and normalize progress, outputs, and errors back to product contracts.
+4. **Execution adapters** — implement product-owned capabilities behind stable contracts. The first video adapter assembles approved media with an installed FFmpeg executable; any later model/runtime adapter normalizes progress, outputs, and errors without owning project or artifact records.
 5. **Artifact and provenance layer** — tracks artifact identity/type (document or media), versions, source project, upstream inputs, reviewer/approval status, dimensions/duration when known, checksums when practical, storage reference, rights/provenance, and export metadata.
 6. **Persistence and queue** — stores durable project/job/artifact state and supports background work where the chosen workload requires it. Database and queue technology remain open.
 7. **Observability and evaluation** — captures correlation IDs, lifecycle events, timings, resource/cost estimates when available, and reproducible quality evaluation data.
@@ -40,10 +40,16 @@ The job lifecycle is separate from review state. A generated draft may be succes
 - Record the versions or revisions needed to understand how a result was produced, subject to provider availability.
 - Do not claim reproducibility when a remote provider cannot guarantee it.
 
+## Initial execution choice
+
+The first demonstrable video path is deterministic media assembly with an installed FFmpeg executable, not generative inference. The product should compose owner-approved screen recordings, still images, title/motion cards, captions, and approved audio into a real MP4. Check for the executable and required codecs at runtime, validate the resulting file, and report failure explicitly. Do not bundle FFmpeg until the exact distribution/build and its license obligations have been reviewed. This choice keeps the first workflow usable on ordinary hardware and avoids making the product's business workflow depend on GPU access, model weights, or vendor accounts.
+
+Model-based generation remains an optional capability for future shots. If adopted, it must sit behind a product-owned contract and be evaluated independently for cost, quality, runtime, terms, output provenance, security, cancellation, and error handling.
+
 ## Selection gates
 
-Choose the stack only after the target workflow and non-functional requirements are known. Choose a persistence layer after defining durability and concurrency expectations. Choose providers/models after a representative workload and acceptance rubric exist, normally at the final-mile evaluation gate.
+Choose the UI framework and persistence layer only when the first workflow and non-functional requirements justify them. Keep the initial implementation as small as possible. Consider a model/runtime only after a representative workload demonstrates that generated media adds value beyond recorded footage, graphics, and captions.
 
 ## Non-goals for this document
 
-This is not yet a detailed deployment architecture, API specification, database schema, threat model, or production readiness claim. Those require a selected workflow and evidence from a running vertical slice.
+This is not yet a detailed deployment architecture, API specification, database schema, threat model, or production readiness claim. Those require evidence from a running vertical slice.
