@@ -1,6 +1,6 @@
 # Video Workbench
 
-A standalone product workspace for a model-independent video creation workbench. This repository owns the product experience, domain contracts, orchestration, and delivery controls; it is separate from the FastVideo framework repository.
+A standalone, internal company production workbench for turning business goals and source materials into reviewable deliverables: business briefs, project scopes, product/service demonstrations, and advertising videos. The first proposed vertical slice is a business offering to video campaign pack. This repository owns the product experience, project/artifact records, orchestration, and delivery controls; it is separate from the FastVideo framework repository.
 
 ## Current state
 
