@@ -10,6 +10,7 @@ import re
 import sys
 import threading
 import uuid
+import zipfile
 from datetime import datetime, timezone
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -435,6 +436,73 @@ def render_project(project_id: str) -> dict[str, Any]:
         return {"project": _public_project(record), "render": summary}
 
 
+def build_draft_pack(project_id: str) -> Path:
+    """Create a version-scoped ZIP of planning artifacts and any successfully rendered draft."""
+    with project_lock(project_id):
+        record = _read_record(project_id)
+        version = int(record["version"])
+        project_dir = _project_dir(project_id)
+        brief_path = project_dir / f"brief-v{version}.md"
+        campaign_path = project_dir / f"campaign-v{version}.json"
+        required = [brief_path, campaign_path]
+        for path in required:
+            if not path.is_file():
+                raise RuntimeError("A required artifact for the current campaign version is missing.")
+
+        entries: list[tuple[Path, str, int]] = [
+            (brief_path, "brief.md", zipfile.ZIP_DEFLATED),
+            (campaign_path, "campaign.json", zipfile.ZIP_DEFLATED),
+        ]
+        render_included = False
+        if record.get("state") == "rendered_draft" and record.get("render_result"):
+            output_path = project_dir / "outputs" / f"draft-v{version}.mp4"
+            sidecar_path = Path(str(output_path) + ".manifest.json")
+            if output_path.is_file() and sidecar_path.is_file():
+                entries.extend([
+                    (output_path, f"draft-v{version}.mp4", zipfile.ZIP_STORED),
+                    (sidecar_path, f"draft-v{version}.mp4.manifest.json", zipfile.ZIP_DEFLATED),
+                ])
+                render_included = True
+
+        exports_dir = project_dir / "exports"
+        exports_dir.mkdir(parents=True, exist_ok=True)
+        target = exports_dir / f"campaign-pack-v{version}-draft.zip"
+        temporary = exports_dir / (target.name + ".tmp-" + uuid.uuid4().hex)
+        generated_at = utc_now()
+        status = "\n".join([
+            "VIDEO WORKBENCH — INTERNAL DRAFT PACK",
+            "",
+            f"Project: {record['title']}",
+            f"Project ID: {project_id}",
+            f"Version: {version}",
+            f"Generated at UTC: {generated_at}",
+            f"Project state: {record.get('state', 'draft')}",
+            f"Rendered MP4 included: {'yes' if render_included else 'no'}",
+            "",
+            "NOT FOR PUBLICATION.",
+            "This archive is a planning/review package, not publication approval.",
+            "Evidence references are owner-entered and are not independently verified by the application.",
+            "Review factual claims, rights, brand/privacy issues, and approval authority separately.",
+            "",
+            "Included files:",
+            *[f"- {archive_name}" for _, archive_name, _ in entries],
+            "- PACK-STATUS.txt",
+            "",
+        ])
+        try:
+            with zipfile.ZipFile(temporary, mode="w", allowZip64=True) as archive:
+                for path, archive_name, compression in entries:
+                    archive.write(path, arcname=archive_name, compress_type=compression)
+                archive.writestr("PACK-STATUS.txt", status, compress_type=zipfile.ZIP_DEFLATED)
+            os.replace(temporary, target)
+        finally:
+            try:
+                temporary.unlink(missing_ok=True)
+            except OSError:
+                pass
+        return target
+
+
 def origin_allowed(origin: str | None, port: int) -> bool:
     if not origin:
         return True
@@ -504,6 +572,9 @@ class WorkbenchHandler(BaseHTTPRequestHandler):
             raise ValueError("Request body must be valid UTF-8 JSON.") from exc
 
     def _artifact_file(self, project_id: str, name: str) -> tuple[Path, str, str, bool] | None:
+        if name == "pack":
+            pack_path = build_draft_pack(project_id)
+            return (pack_path, "application/zip", pack_path.name, False)
         record = _read_record(project_id)
         version = int(record["version"])
         project_dir = _project_dir(project_id)
@@ -611,7 +682,7 @@ class WorkbenchHandler(BaseHTTPRequestHandler):
             except (RuntimeError, ValueError):
                 self._json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Saved project data is invalid."})
             return
-        artifact_match = re.fullmatch(r"/api/projects/([0-9a-f]{32})/files/(brief|campaign|video|provenance)", path)
+        artifact_match = re.fullmatch(r"/api/projects/([0-9a-f]{32})/files/(brief|campaign|video|provenance|pack)", path)
         if artifact_match:
             try:
                 artifact = self._artifact_file(artifact_match.group(1), artifact_match.group(2))
