@@ -95,7 +95,23 @@ Do not state or visually imply any of the following without new, direct evidence
 - Fake contributor names, testimonials, customer logos, bounty values, payment events, success dashboards, acceptance states, or usage metrics presented as real.
 - Any real person's identity, contribution data, private project information, or screenshot used without appropriate permission.
 
-## 7. Footage and asset plan
+## 7. Public landing page inspection (read-only, 2026-10-15)
+
+The public prototype URL was fetched with JavaScript-rendered page extraction. This confirms only that the landing page was accessible and exposes the following rendered text; it does **not** verify interactive behavior, account-specific views, persistence, or a full contributor/owner workflow.
+
+Observed public-page elements include:
+- A displayed “9” under “Work ready to pick up”.
+- Two “Community showcase” examples, one with “$220 offered” for a UX review and one with “$140 offered” for a translation task.
+- An accepted-work display of “0 accepted / 2 to go”, an XP summary, and the text “50 XP per accepted contribution”.
+- Open Graph/share-preview metadata whose description currently reads: “Fix the acceptance-criteria count in the PostHog event properties so multiple newline-separated criteria are counted correctly.”
+
+**Release implications:**
+- Treat the counts, showcase records, and dollar amounts as unverified displayed content. Do not present them as real inventory, paid transactions, real user outcomes, customer traction, or proof that an offer will be paid. The canonical README says the current app has listings only and does not implement payment processing, escrow, or guaranteed payouts.
+- Do not use the showcase records as campaign footage unless the owner confirms whether they are seeded/demo data and approves that use. If used for product testing, label synthetic records in the edit.
+- The share-preview description appears to be engineering-task text rather than approved public marketing copy. It must be reviewed and replaced with owner-approved metadata before public promotion or link sharing.
+- The live interactive contribution/review lifecycle remains unverified. The next verification requires actual scenarios with separate contributor and bounty-owner identities, with observed pass/fail outcomes recorded.
+
+## 8. Footage and asset plan
 
 1. Run a live walkthrough using separate contributor and bounty-owner accounts where available. Record the actual build/version, account roles, scenario, observed output, and failures. Do not infer missing results.
 2. Capture only screens needed to prove the claims: bounty criteria, contribution criteria snapshot, criterion-by-criterion review, and revision/review history.
@@ -104,7 +120,7 @@ Do not state or visually imply any of the following without new, direct evidence
 5. Maintain a simple asset ledger for source URL, capture date, owner/permission, license, edit usage, and required attribution. Keep credentials and personal data out of captures.
 6. Keep raw footage and the final export in an approved company-controlled location. Do not commit large media or private captures to this Git repository.
 
-## 8. Review and acceptance checklist
+## 9. Review and acceptance checklist
 
 Before the first cut:
 - [ ] Product owner confirms audience, objective, terminology, pilot CTA, duration, and destination.
@@ -121,7 +137,7 @@ Before approval for publication:
 - [ ] Product owner approves final copy, visual edit, CTA, link, destination, and permitted audience.
 - [ ] Export settings and final artifact metadata are recorded. If generation or rendering fails, record the failure; do not present a placeholder as a finished video.
 
-## 9. Proposed output package for Video Workbench
+## 10. Proposed output package for Video Workbench
 
 - This reviewed campaign brief and claims/evidence ledger.
 - Approved script and timed storyboard.
@@ -131,7 +147,7 @@ Before approval for publication:
 - Final video **only after actual production and review**, or an explicit failure record identifying what prevented it.
 - Export metadata: dimensions, aspect ratio, frame rate, duration, codec/container, audio/caption assets, source artifact versions, production path, tool/backend versions where available, and approval status.
 
-## 10. Source references and unresolved questions
+## 11. Source references and unresolved questions
 
 **Primary application source:** [Contribution-bounties-centre- README](https://github.com/Loofy147/Contribution-bounties-centre-/blob/main/README.md)  
 **Strategic first-consumer charter:** [contribution-network/docs/10-first-consumer-project-charter.md](https://github.com/Loofy147/contribution-network/blob/main/docs/10-first-consumer-project-charter.md)  
