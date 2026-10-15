@@ -68,6 +68,37 @@ class PlanContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Offering is required"):
             app.normalize_plan(raw)
 
+    def test_claim_ledger_preserves_status_and_requires_evidence_when_asserted(self):
+        raw = valid_plan()
+        raw["claims_evidence"] = [
+            {"claim": "The workflow groups contributions by project", "status": "documented-source",
+             "evidence": "https://example.org/product-docs"},
+            {"claim": "The owner demonstrated the workflow", "status": "direct-observation",
+             "evidence": "Observed during owner walkthrough on 2026-10-15"},
+            {"claim": "The process may reduce coordination cost", "status": "inference", "evidence": ""},
+            {"claim": "Payouts are guaranteed", "status": "unverified", "evidence": ""},
+        ]
+        plan = app.normalize_plan(raw)
+        campaign = app.build_campaign(plan, "a" * 32, 1)
+        brief = app.build_brief(plan, 1)
+        self.assertEqual(campaign["claims_evidence"], plan["claims_evidence"])
+        self.assertIn("The workflow groups contributions by project", brief)
+        self.assertIn("status: unverified", brief)
+        self.assertIn("does not open or independently verify references", brief)
+        self.assertIsNone(plan["claims_evidence"][3]["evidence"])
+
+    def test_claim_ledger_rejects_missing_required_evidence_invalid_status_and_too_many_claims(self):
+        raw = valid_plan()
+        raw["claims_evidence"] = [{"claim": "Observed fact", "status": "direct-observation", "evidence": ""}]
+        with self.assertRaisesRegex(ValueError, "needs an evidence URL or observation note"):
+            app.normalize_plan(raw)
+        raw["claims_evidence"] = [{"claim": "Mystery claim", "status": "approved", "evidence": "some reference"}]
+        with self.assertRaisesRegex(ValueError, "status must be one of"):
+            app.normalize_plan(raw)
+        raw["claims_evidence"] = [{"claim": f"Claim {index}", "status": "unverified"} for index in range(31)]
+        with self.assertRaisesRegex(ValueError, "at most 30"):
+            app.normalize_plan(raw)
+
     def test_total_storyboard_duration_is_bounded(self):
         raw = valid_plan()
         raw["scenes"] = [{"title": f"Scene {i}", "duration_seconds": 20, "background": "#101b2d"} for i in range(5)]
@@ -101,7 +132,13 @@ class ProjectPersistenceTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
 
     def test_create_save_update_and_list_projects_with_versioned_artifacts(self):
-        created = app.create_project(valid_plan())
+        plan = valid_plan()
+        plan["claims_evidence"] = [{
+            "claim": "A measurable claim requiring owner review",
+            "status": "documented-source",
+            "evidence": "https://example.org/owner-reviewed-source",
+        }]
+        created = app.create_project(plan)
         project = created["project"]
         project_id = project["id"]
         folder = self.root / project_id
@@ -109,6 +146,8 @@ class ProjectPersistenceTests(unittest.TestCase):
         self.assertTrue((folder / "brief-v1.md").is_file())
         manifest1 = json.loads((folder / "campaign-v1.json").read_text(encoding="utf-8"))
         self.assertEqual(manifest1["output"]["path"], "outputs/draft-v1.mp4")
+        self.assertEqual(manifest1["claims_evidence"][0]["claim"], "A measurable claim requiring owner review")
+        self.assertIn("Claims and evidence ledger", (folder / "brief-v1.md").read_text(encoding="utf-8"))
         edited = valid_plan()
         edited["project_title"] = "Edited campaign"
         updated = app.update_project(project_id, edited)
@@ -163,6 +202,8 @@ class BrowserAssetContractTests(unittest.TestCase):
         server = (ROOT / "tools" / "workbench_server.py").read_text(encoding="utf-8")
         self.assertIn('<script src="/assets/app.js" defer></script>', html)
         self.assertIn('href="/assets/styles.css"', html)
+        self.assertIn('id="claim-list"', html)
+        self.assertIn("claims_evidence", script)
         self.assertNotRegex(html, r"(?i)\son[a-z]+\s*=")
         self.assertIn("textContent", script)
         self.assertNotRegex(script, r"\.innerHTML\s*=|insertAdjacentHTML|document\.write\s*\(")
