@@ -29,6 +29,33 @@ When the company has a product/service offering, business objective, or initiati
 
 This campaign pack is the first vertical slice because it connects business context, a required planning artifact, a visual output, review, and export in one traceable workflow. The brief and concept must remain useful deliverables even when video generation fails or is not yet configured.
 
+## Pilot offering for the first campaign pack
+
+Use **Contribution Network / its current ContribQuest prototype** as the first real offering to test this workbench workflow, subject to owner review of the final messaging. The application source of truth is [Loofy147/Contribution-bounties-centre-](https://github.com/Loofy147/Contribution-bounties-centre-). Its README identifies Contribution Network as the strategic project and ContribQuest as the current live prototype. The separate [contribution-cloud/Contributions-centre](https://github.com/contribution-cloud/Contributions-centre) is described there as a future portfolio/repository control plane, not the current application runtime.
+
+### Proposed demonstration
+
+Create a concise product explainer/demo that communicates the problem, the contribution/bounty workflow, and how work is reviewed. A proposed initial target is a 45–60 second video, but timing and format remain acceptance choices to validate.
+
+Ground the script and visuals in inspected source material:
+- A bounty can define 1–10 distinct acceptance criteria.
+- A submitted contribution is reviewed against the preserved criteria snapshot.
+- The owner records pass/fail for each criterion and provides written rationale; acceptance is blocked unless every criterion passes.
+- Work can be accepted, rejected, or returned for changes, with revision/review history preserved.
+- The prototype records 50 platform XP for acceptance and increments an accepted-work counter; XP is not independently validated as a measure of skill.
+- Paid bounty entries are listings only in the current prototype; there is no escrow, payment processing, or guaranteed payout.
+
+### Claims and demonstration safeguards
+
+- Describe ContribQuest as a current prototype, not as proven production-ready infrastructure.
+- Do not imply that paid bounties are paid out through the app.
+- Do not present platform XP as a validated skill score.
+- Do not claim complete live end-to-end verification; the source README says its browser scenarios still need live execution with separate contributor and bounty-owner identities.
+- Do not imply the source snapshot builds or runs independently of AppDeploy; the README explicitly records unresolved AppDeploy SDK/client dependencies.
+- Clearly label fictional demonstration records and simulated activity. Do not expose real contributor information or private company data without approval.
+
+The output package should include the approved creative brief, claims/evidence ledger, script, scene/shot outline, caption/voiceover copy, final video or explicit failure record, and export metadata. If the real video backend is not yet available, complete and review the planning artifacts first and label any rendered mock/animatic accurately.
+
 ## Broader outcome families — not all MVP scope
 
 The same project/artifact foundation may later support:
