@@ -8,15 +8,15 @@
 - [x] Define the primary job-to-be-done and a first workflow: business offering to video campaign pack.
 - [ ] Validate the selected workflow, required outputs, review/approval rules, and exclusions against an actual company use case.
 - [ ] Define measurable acceptance criteria and a representative test workload for the brief, concept, and real video output.
-- [ ] Compare FastVideo Studio and Dreamverse for selective component reuse; record source revisions, license, dependencies, build/test results, security implications, and estimated adaptation cost.
+- [x] Audit FastVideo Studio and Dreamverse at an immutable source revision. Decision: copy neither app into the product foundation; use an FFmpeg-backed deterministic assembly path first and reconsider generation only if the workflow proves it needs generated shots.
 - [ ] Decide initial product license and contribution policy; review whether public repository visibility is appropriate while that decision remains open.
 - [ ] Maintain CI and inspectable decision records.
 
-**Exit gate:** approved product brief, reuse audit, provenance baseline, and accepted first vertical-slice scope. A written plan alone is not proof that video execution works.
+**Exit gate:** the product owner confirms the first workflow, accepts the first-render output contract, makes a repository visibility/distribution decision before external contributions, and reviews the source-level reuse audit. A written plan alone is not proof that video execution works.
 
 ## Stage 1 — Domain contracts and executable skeleton
 
-- [ ] Define project, business brief, concept/script, review/approval, capability, generation/processing request, job, attempt, media/document artifact, result, and error contracts.
+- [ ] Define project, business brief, concept/script, review/approval, capability, render request, job, attempt, media/document artifact, result, and error contracts.
 - [ ] Specify legal state transitions, cancellation, timeout, retry, partial-result behavior, artifact versioning, and provenance links.
 - [ ] Implement contract validation and unit tests without a model runtime or GPU dependency.
 - [ ] Add structured logs and correlation IDs with secret redaction.
@@ -29,11 +29,11 @@
 - [ ] Capture an offering, audience, objective, differentiators, approved claims, call to action, and permitted source/brand assets.
 - [ ] Draft an editable brief and script/scene outline; expose missing facts, assumptions, and claims needing confirmation.
 - [ ] Require review/approval before producing the video.
-- [ ] Submit the approved video request through the provider-independent capability contract.
-- [ ] Retain the actual job lifecycle, settings, execution identity, output artifact, and actionable error information.
+- [ ] Submit the approved media-assembly request through the product-owned renderer contract; keep model-generation adapters optional.
+- [ ] Retain the actual render lifecycle, renderer/version, settings, source manifest, output artifact/checksum, validation results, and actionable error information.
 - [ ] Export the video, brief, script/scene outline, captions/copy, and relevant output metadata.
 
-**Exit gate:** a reviewer can start from a real company offering, approve the planning artifacts, see a real video result or actionable failure, and export traceable outputs. A stub-only run does not satisfy the real-video acceptance gate.
+**Exit gate:** a reviewer can start from the ContribQuest offering, approve the planning artifacts, render and play a real MP4 from approved source assets, inspect provenance and output validation, and export all campaign artifacts. A stub, storyboard, or mock stream does not satisfy the real-video acceptance gate.
 
 ## Stage 3 — Final-mile provider/model evaluation
 
