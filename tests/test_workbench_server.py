@@ -1,6 +1,7 @@
 from __future__ import annotations
 import json
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -153,6 +154,29 @@ class ProjectPersistenceTests(unittest.TestCase):
         failed = app.get_project(project_id)
         self.assertEqual(failed["project"]["state"], "render_failed")
         self.assertIn("FFmpeg is missing", failed["project"]["render_error"])
+
+
+class BrowserAssetContractTests(unittest.TestCase):
+    def test_local_assets_use_external_scripts_and_safe_text_rendering(self):
+        html = (ROOT / "web" / "index.html").read_text(encoding="utf-8")
+        script = (ROOT / "web" / "app.js").read_text(encoding="utf-8")
+        server = (ROOT / "tools" / "workbench_server.py").read_text(encoding="utf-8")
+        self.assertIn('<script src="/assets/app.js" defer></script>', html)
+        self.assertIn('href="/assets/styles.css"', html)
+        self.assertNotRegex(html, r"(?i)\\son[a-z]+\\s*=")
+        self.assertIn("textContent", script)
+        self.assertNotRegex(script, r"\\.innerHTML\\s*=|insertAdjacentHTML|document\\.write\\s*\\(")
+        self.assertIn("script-src 'self'", server)
+
+    def test_browser_javascript_parses_when_node_is_available(self):
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("Node.js is not installed in this environment.")
+        result = subprocess.run(
+            [node, "--check", str(ROOT / "web" / "app.js")],
+            capture_output=True, text=True, timeout=15, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
 
 
 @unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"), "FFmpeg/FFprobe not installed")
