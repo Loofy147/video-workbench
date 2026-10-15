@@ -409,7 +409,7 @@ def origin_allowed(origin: str | None, port: int) -> bool:
         return True
     parsed = urlsplit(origin)
     return parsed.scheme == "http" and parsed.netloc.lower() in {
-        f"127.0.0.1:{port}", f"localhost:{port}", f"[::1]:{port}"
+        f"127.0.0.1:{port}", f"localhost:{port}"
     } and parsed.path == "" and not parsed.query and not parsed.fragment
 
 
