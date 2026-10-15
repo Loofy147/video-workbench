@@ -1,4 +1,4 @@
-"""Guard the initial documentation structure and local Markdown links."""
+"""Guard the initial product documentation structure and internal Markdown links."""
 
 from pathlib import Path
 import re
@@ -59,6 +59,15 @@ class RepositoryFoundationTests(unittest.TestCase):
         self.assertIn("Deferred", brief)
         self.assertIn("provider-independent", architecture)
         self.assertIn("remain open", brief)
+
+    def test_product_brief_captures_company_use_and_one_bounded_workflow(self):
+        brief = (ROOT / "docs/PRODUCT_BRIEF.md").read_text(encoding="utf-8")
+        self.assertIn("company owner/operator", brief)
+        self.assertIn("Primary job-to-be-done", brief)
+        self.assertIn("business offering to video campaign pack", brief)
+        self.assertIn("Broader outcome families — not all MVP scope", brief)
+        self.assertIn("project scopes", brief)
+        self.assertIn("stub must never be represented as actual model execution", brief)
 
 
 if __name__ == "__main__":
