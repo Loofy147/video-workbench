@@ -6,14 +6,16 @@
 
 Keep product contracts **provider-independent**: concepts should remain independent from any one model, vendor, or inference framework. External systems should be integrated behind explicit adapters. Product-level contracts should remain testable without downloading weights or requiring a GPU.
 
+This is an internal company-use workbench first. It should support related business and media artifacts while keeping the first implementation focused on the business-offering-to-video-campaign workflow.
+
 ## Proposed logical components
 
-1. **Product interface** — project setup, job configuration, progress, review, and export. The first interface technology is undecided.
-2. **Application orchestration** — validates requests, applies policy and defaults, creates jobs, dispatches work, handles cancellation/retry, and reports results.
-3. **Domain contracts** — typed representations for projects, jobs, capabilities, assets, errors, and execution metadata. These contracts should not import a specific provider SDK.
-4. **Provider/runtime adapters** — translate the stable product request to a selected runtime and normalize progress, outputs, and errors back to product contracts.
-5. **Asset and provenance layer** — tracks asset identity, media type, dimensions/duration when known, source job, checksums when practical, storage reference, and rights/provenance metadata.
-6. **Persistence and queue** — stores durable project/job state and supports background work where the chosen workload requires it. Database and queue technology remain open.
+1. **Product interface** — company/project context, brief and concept editing, review/approval, job progress, artifact inspection, and export. The first interface technology is undecided.
+2. **Application orchestration** — validates requests, checks required approvals, applies policy and defaults, creates jobs, dispatches work, handles cancellation/retry, and reports results.
+3. **Domain contracts** — typed representations for projects, business briefs, concepts/scripts, review states, capabilities, jobs, attempts, artifacts, errors, and execution metadata. These contracts should not import a specific provider SDK.
+4. **Provider/runtime adapters** — translate the approved product request to a selected runtime and normalize progress, outputs, and errors back to product contracts.
+5. **Artifact and provenance layer** — tracks artifact identity/type (document or media), versions, source project, upstream inputs, reviewer/approval status, dimensions/duration when known, checksums when practical, storage reference, rights/provenance, and export metadata.
+6. **Persistence and queue** — stores durable project/job/artifact state and supports background work where the chosen workload requires it. Database and queue technology remain open.
 7. **Observability and evaluation** — captures correlation IDs, lifecycle events, timings, resource/cost estimates when available, and reproducible quality evaluation data.
 
 These are logical responsibilities, not a mandate to deploy seven separate services. The initial implementation should prefer the smallest structure that preserves clear contracts and enables testing.
@@ -24,15 +26,17 @@ The starting state model is:
 
 `draft → queued → running → succeeded | failed | cancelled`
 
-The implementation may refine this state machine after retry, cancellation, partial output, and resume semantics are specified. A retry should be traceable as an attempt; it must not silently erase the failed attempt. State transitions should be validated in one place and tested.
+The job lifecycle is separate from review state. A generated draft may be successful as a job but not approved for publication. Review status should therefore be recorded on the relevant artifact/version instead of overloading job status. The implementation may refine this state machine after retry, cancellation, partial output, and resume semantics are specified. A retry should be traceable as an attempt; it must not silently erase the failed attempt.
 
 ## Contract principles
 
-- Include a stable job ID and correlation ID.
-- Record the requested capability, normalized request, relevant settings, provider/runtime identity, timestamps, and attempt information.
+- Include stable project, artifact, job, attempt, and correlation IDs where appropriate.
+- Record the business inputs, approved claims, normalized request, relevant settings, provider/runtime identity, timestamps, and attempt information.
+- Keep assumptions and claims requiring human confirmation visible; do not silently invent factual company claims.
 - Separate user-facing errors from internal diagnostics; redact secrets from logs.
-- Represent outputs as asset references and metadata; do not embed video bytes in job JSON.
-- Make cancellation, timeout, retry, and partial-failure behavior explicit.
+- Represent outputs as artifact references and metadata; do not embed video bytes in job JSON.
+- Link generated video to the brief/concept versions and user approval from which it was produced.
+- Make cancellation, timeout, retry, partial-failure, review, and export behavior explicit.
 - Record the versions or revisions needed to understand how a result was produced, subject to provider availability.
 - Do not claim reproducibility when a remote provider cannot guarantee it.
 
