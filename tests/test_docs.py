@@ -19,7 +19,6 @@ REQUIRED_FILES = (
     "docs/ROADMAP.md",
     "docs/decisions/ADR-0001-separate-product-repository.md",
     "docs/examples/contribution-network-campaign-brief.md",
-    "LICENSE",
     "NOTICE.md",
     "src/video_workbench/render.py",
     "tests/test_renderer.py",
@@ -111,15 +110,15 @@ class RepositoryFoundationTests(unittest.TestCase):
         self.assertIn("not as proven production-ready infrastructure", brief)
 
 
-    def test_license_scope_and_source_available_status_are_explicit(self):
-        license_text = (ROOT / "LICENSE").read_text(encoding="utf-8")
+    def test_license_choice_is_explicitly_deferred_and_no_proposal_is_applied(self):
         decisions = (ROOT / "docs/LICENSING_DECISIONS.md").read_text(encoding="utf-8")
         notice = (ROOT / "NOTICE.md").read_text(encoding="utf-8")
-        self.assertIn("PolyForm Internal Use License 1.0.0", license_text)
-        self.assertIn("you may not distribute the software", license_text)
-        self.assertIn("not OSI-approved open-source software", decisions)
-        self.assertIn("outside contributors", decisions)
-        self.assertIn("third-party component", notice)
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertFalse((ROOT / "LICENSE").exists(), "An unapproved license must not be applied implicitly.")
+        self.assertIn("no license is selected", decisions)
+        self.assertIn("No project license is selected", notice)
+        self.assertIn("No project license is selected in this PR", readme)
+        self.assertIn("before accepting outside contributors", decisions.lower())
 
     def test_renderer_docs_cover_output_validation_and_claim_boundaries(self):
         guide = (ROOT / "docs/RENDERER.md").read_text(encoding="utf-8")
