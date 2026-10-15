@@ -33,12 +33,12 @@
 - [x] Write a sidecar manifest with input-manifest hash, source hashes/provenance, tool versions, output hash/size, claim-evidence records, approval state, and release blockers.
 - [x] Reject unsafe relative paths, unsupported media types, invalid limits, duplicate scene IDs, and default overwrite attempts.
 - [x] Block unwatermarked CLI output unless the manifest contains a timezone-aware approval record and supported claim-evidence states.
-- [x] Provide a loopback-only browser flow for business offering, audience, objective, differentiators, call to action, and card storyboard.
+- [x] Provide a loopback-only browser flow for business offering, audience, objective, differentiators, call to action, manual claims/evidence ledger, and card storyboard.
 - [x] Persist each saved plan as a versioned Markdown brief and JSON campaign manifest without overwriting earlier versions.
 - [x] Render a watermarked 1280×720 draft from the saved version and expose playback/download plus the provenance/technical validation report.
 - [x] Keep local project records and generated artifacts under Git-ignored .workbench/projects/.
 
-**Scope limit:** The browser UI has no login, role system, authenticated approval, asset uploads, remote access, durable job queue, database, encrypted-at-rest guarantee, deployment, or live ContribQuest walkthrough. All browser renders retain a fixed NOT FOR PUBLICATION watermark. Renderer approval/evidence fields remain assertions, not independently authenticated or verified evidence.
+**Scope limit:** The browser UI has no login, role system, authenticated approval, asset uploads, remote access, durable job queue, database, encrypted-at-rest guarantee, deployment, or live ContribQuest walkthrough. All browser renders retain a fixed NOT FOR PUBLICATION watermark. Renderer approval/evidence fields remain assertions, not independently authenticated or verified evidence. A recorded claim reference is not confirmation that the source exists or supports the claim.
 
 ## Stage 2 — Business offering to video campaign pack
 
@@ -46,7 +46,8 @@
 - [x] Draft and save an editable Markdown brief and versioned JSON render manifest.
 - [x] Submit the current saved campaign version through the product-owned deterministic renderer.
 - [x] Retain the actual renderer result summary, checksum/media properties, validation status, and release blockers.
-- [ ] Add source-aware structured claim/evidence entry and clearly expose missing facts, assumptions, and claims requiring confirmation.
+- [x] Add a structured manual claim/evidence ledger with documented-source, direct-observation, inference, and unverified statuses; require a reference/note for the first two and preserve entries in the brief and render manifest.
+- [ ] Add claim discovery/mapping across all brief/storyboard copy and flag factual statements omitted from the manual ledger. Ledger references are not independently verified.
 - [ ] Add safe asset intake with file-size/type limits, media probing, provenance capture, rights policy, and approved local asset references.
 - [ ] Implement reviewer identity and authority, authenticated review/approval history, and an immutable decision trail before any unwatermarked or publishable release path exists.
 - [ ] Export a reviewed pack containing brief, script/scene outline, captions/copy, video, and relevant output metadata.
