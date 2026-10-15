@@ -9,7 +9,7 @@
 - [ ] Validate the selected workflow, required outputs, review/approval rules, and exclusions against an actual company use case.
 - [ ] Define measurable acceptance criteria and a representative test workload for the brief, concept, and real video output.
 - [x] Audit FastVideo Studio and Dreamverse at an immutable source revision. Decision: copy neither app into the product foundation; use an FFmpeg-backed deterministic assembly path first and reconsider generation only if the workflow proves it needs generated shots.
-- [x] Select and record PolyForm Internal Use License 1.0.0 for first-party software during the internal-only stage; explicitly reserve documentation/media scope and prohibit claims that the project is OSI-approved open source. Revisit before redistribution or outside contributions.
+- [ ] Resolve license and distribution policy. A PolyForm Internal Use 1.0.0 proposal is staged, but it is not a final decision while the GitHub repository is public. The owner must decide whether to make the repository private before approving an internal-use license; otherwise choose a grant consistent with intended public distribution.
 - [ ] Maintain CI and inspectable decision records.
 
 **Exit gate:** the product owner confirms the first workflow, accepts the first-render output contract, makes a repository visibility/distribution decision before external contributions, and reviews the source-level reuse audit. A written plan alone is not proof that video execution works.

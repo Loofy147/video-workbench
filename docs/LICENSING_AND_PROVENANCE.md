@@ -2,9 +2,9 @@
 
 ## Current repository status
 
-The first-party software source is covered by the root PolyForm Internal Use License 1.0.0. This source-available license permits internal business use and changes but does not grant a right to distribute the software; it is not OSI-approved open-source software. The root file is copied unchanged from the license steward's versioned repository. Read [license decisions](LICENSING_DECISIONS.md) and [NOTICE.md](../NOTICE.md) for the scope boundary.
+This PR branch proposes PolyForm Internal Use License 1.0.0 for first-party software; current `main` remains unlicensed until an authorized merge. The proposal permits internal business use and changes but does not grant a general right to distribute the software, and it is not OSI-approved open-source software. The root text is copied unchanged from the license steward's versioned repository. Read [license decisions](LICENSING_DECISIONS.md) and [NOTICE.md](../NOTICE.md) for scope.
 
-The license does not automatically cover third-party SDKs, code, model weights, datasets, APIs, source media, logos, or sample creative content. Public repository visibility is not a substitute for an explicit license. Do not claim the project is open source or permit redistribution under the current grant.
+**Visibility decision required:** this GitHub repository is currently public. Do not merge the PolyForm proposal until the owner decides whether to make the repository private; if public distribution/collaboration is intended, choose a different license grant consistent with that intent. The proposal does not automatically cover third-party SDKs, code, model weights, datasets, APIs, source media, logos, or sample creative content.
 
 ## Required intake record
 
