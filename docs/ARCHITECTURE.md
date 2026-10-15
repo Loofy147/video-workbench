@@ -46,6 +46,12 @@ The first demonstrable video path is deterministic media assembly with an instal
 
 Model-based generation remains an optional capability for future shots. If adopted, it must sit behind a product-owned contract and be evaluated independently for cost, quality, runtime, terms, output provenance, security, cancellation, and error handling.
 
+## Current executable slice
+
+The CLI implementation lives in `src/video_workbench/render.py` and `tools/render_campaign.py`. It validates a versioned JSON campaign manifest, constrains input paths to the campaign directory, records SHA-256 checksums and supplied provenance, assembles card/image/video scenes and optional audio with FFmpeg, validates the output with FFprobe, and writes a sidecar manifest. A default review watermark is used. Unwatermarked rendering requires an approval record and supported claim-evidence states, but those records are manifest assertions rather than an authentication system or independent legal/factual review.
+
+The renderer is tested independently of a model, API, GPU, database, or web frontend. It is an executable vertical-slice foundation, not yet a full application workflow.
+
 ## Selection gates
 
 Choose the UI framework and persistence layer only when the first workflow and non-functional requirements justify them. Keep the initial implementation as small as possible. Consider a model/runtime only after a representative workload demonstrates that generated media adds value beyond recorded footage, graphics, and captions.
