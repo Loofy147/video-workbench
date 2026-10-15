@@ -475,7 +475,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         result = render_campaign(args.manifest, args.output, overwrite=args.overwrite)
-    except RenderError as exc:
+    except (RenderError, OSError) as exc:
         print(json.dumps({"status": "failed", "error": str(exc)}, indent=2), file=sys.stderr)
         return 2
     print(json.dumps(result, indent=2, ensure_ascii=False))

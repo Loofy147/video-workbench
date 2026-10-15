@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import json
+from contextlib import redirect_stderr
+from io import StringIO
 import shutil
 import subprocess
 import sys
@@ -14,7 +16,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from video_workbench.render import RenderError, load_campaign, render_campaign  # noqa: E402
+from video_workbench.render import RenderError, load_campaign, render_campaign, main  # noqa: E402
 
 
 class CampaignManifestTests(unittest.TestCase):
@@ -117,6 +119,20 @@ class CampaignManifestTests(unittest.TestCase):
         self.write_manifest()
         with self.assertRaisesRegex(RenderError, "does not exist or is not a file"):
             load_campaign(self.manifest)
+
+
+    def test_cli_serializes_filesystem_errors_without_traceback(self):
+        blocked_parent = self.root / "not-a-directory"
+        blocked_parent.write_text("this path is a file", encoding="utf-8")
+        stderr = StringIO()
+        with redirect_stderr(stderr):
+            status = main([str(self.manifest), "--output", str(blocked_parent / "campaign.mp4")])
+        self.assertEqual(status, 2)
+        message = stderr.getvalue()
+        self.assertNotIn("Traceback", message)
+        payload = json.loads(message)
+        self.assertEqual(payload["status"], "failed")
+        self.assertTrue(payload["error"])
 
     def test_does_not_overwrite_existing_output_by_default(self):
         output = self.root / "existing.mp4"

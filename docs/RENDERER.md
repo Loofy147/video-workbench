@@ -49,7 +49,7 @@ A successful run must:
 4. Validate one H.264 video stream, requested dimensions and frame rate, expected duration and exact decoded frame count, and an AAC audio stream when requested (or no audio otherwise).
 5. Atomically move the validated file into place and write a JSON sidecar containing the input manifest hash, source hashes/provenance, tool versions, output hash and size, technical validation, claim evidence, approval state, and release blockers.
 
-Missing executables/fonts, invalid assets, unsafe paths, malformed manifests, failed encoding, or failed media checks produce a non-zero exit and actionable error. A failed validation must never be reported as a successful render.
+Missing executables/fonts, invalid assets, unsafe paths, malformed manifests, filesystem errors, failed encoding, or failed media checks produce a non-zero exit and a structured JSON error without a Python traceback. A failed validation must never be reported as a successful render.
 
 ## Approval and rights gates
 
