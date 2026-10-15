@@ -158,6 +158,8 @@ class RendererIntegrationTests(unittest.TestCase):
             self.assertEqual(saved["output"]["width"], 640)
             self.assertEqual(saved["output"]["height"], 360)
             self.assertTrue(saved["validation"]["ffprobe_passed"])
+            self.assertTrue(saved["validation"]["frame_count_passed"])
+            self.assertEqual(saved["output"]["expected_frame_count"], 48)
             probe = subprocess.run(
                 [shutil.which("ffprobe"), "-v", "error", "-show_entries",
                  "stream=codec_name,width,height,avg_frame_rate", "-of", "json", str(output_path)],

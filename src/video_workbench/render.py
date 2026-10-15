@@ -400,7 +400,7 @@ def render_campaign(manifest_path: Path, output_override: Path | None = None, *,
         command += ["-map", audio_label, "-c:a", "aac", "-b:a", "192k"] if audio_label else ["-an"]
         command += ["-t", f"{total_duration:.6f}", str(temporary_output)]
         _run(command, cwd=temp_dir, timeout=max(120, int(total_duration * 12)), label="FFmpeg render")
-        probe_result = _run([ffprobe, "-v", "error", "-show_streams", "-show_format", "-of", "json", str(temporary_output)], cwd=temp_dir, timeout=30, label="FFprobe validation")
+        probe_result = _run([ffprobe, "-v", "error", "-count_frames", "-show_streams", "-show_format", "-of", "json", str(temporary_output)], cwd=temp_dir, timeout=60, label="FFprobe validation")
         try:
             probe = json.loads(probe_result.stdout)
         except json.JSONDecodeError as exc:
@@ -424,6 +424,13 @@ def render_campaign(manifest_path: Path, output_override: Path | None = None, *,
             actual_fps = 0
         if abs(actual_fps - fps) > 0.01:
             raise RenderError(f"Rendered frame-rate mismatch: expected {fps}, got {rate}.")
+        expected_frames = int(round(total_duration * fps))
+        try:
+            actual_frames = int(stream.get("nb_read_frames") or stream.get("nb_frames") or 0)
+        except (TypeError, ValueError):
+            actual_frames = 0
+        if actual_frames != expected_frames:
+            raise RenderError(f"Rendered frame-count mismatch: expected {expected_frames}, got {actual_frames}.")
         if audio_path and not any(s.get("codec_type") == "audio" and s.get("codec_name") == "aac" for s in probe.get("streams", [])):
             raise RenderError("Audio was requested but the output has no AAC audio stream.")
         if not audio_path and any(s.get("codec_type") == "audio" for s in probe.get("streams", [])):
@@ -447,10 +454,10 @@ def render_campaign(manifest_path: Path, output_override: Path | None = None, *,
             "input_manifest": {"path": Path(manifest_path).name, "sha256": settings["manifest_sha256"]},
             "output": {"path": str(output_path), "sha256": output_sha, "bytes": output_path.stat().st_size, "container": "mp4",
                        "video_codec": "h264", "audio_codec": "aac" if audio_path else None, "width": width, "height": height,
-                       "fps": fps, "duration_seconds": round(duration_reported, 6), "expected_frame_count": int(round(total_duration * fps))},
+                       "fps": fps, "duration_seconds": round(duration_reported, 6), "expected_frame_count": expected_frames},
             "sources": sources, "approval": campaign.get("_approval"), "claims_evidence": campaign.get("_claims_evidence", []),
             "release_gate": {"status": "blocked" if campaign.get("_release_blockers") else "passed", "blockers": campaign.get("_release_blockers", [])},
-            "validation": {"ffprobe_passed": True, "codec_and_dimensions_passed": True, "duration_passed": True, "frame_rate_passed": True, "audio_expectation_passed": True},
+            "validation": {"ffprobe_passed": True, "codec_and_dimensions_passed": True, "duration_passed": True, "frame_rate_passed": True, "frame_count_passed": True, "audio_expectation_passed": True},
             "limitations": ["Successful rendering verifies media assembly and file structure, not factual accuracy, product behavior, rights ownership, or publication approval. A watermark is not a substitute for human review."],
         }
         sidecar = output_path.with_suffix(output_path.suffix + ".manifest.json")

@@ -27,7 +27,7 @@
 ## Implemented vertical slice — 2026-10-15
 
 - [x] Render title cards, still-image scenes, video clips, and optional background audio through an installed FFmpeg executable.
-- [x] Validate H.264 codec, dimensions, frame rate, expected duration, and optional AAC audio with FFprobe.
+- [x] Validate H.264 codec, dimensions, frame rate, expected duration, exact decoded frame count, and optional AAC audio with FFprobe.
 - [x] Write a sidecar manifest with input-manifest hash, source hashes/provenance, tool versions, output hash/size, claim-evidence records, approval state, and release blockers.
 - [x] Reject unsafe relative paths, unsupported media types, invalid limits, duplicate scene IDs, and default overwrite attempts.
 - [x] Block unwatermarked output unless the manifest contains a timezone-aware approval record and supported claim evidence.
