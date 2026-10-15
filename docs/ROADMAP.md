@@ -1,6 +1,8 @@
 # Roadmap and Exit Gates
 
-**Status:** The first local browser vertical slice is implemented on the open draft PR. It now captures a campaign plan, saves versioned briefs/manifests, invokes the real local renderer, and exposes technical validation/provenance. It is still a single-machine pilot, not a deployed multi-user application.
+**Status:** The first local browser vertical slice was merged into `main` on 2026-10-15 (commit `4927cfac71f0a5b5a1a59bbfd4bbe39cc6d87fa2`). It captures a campaign plan, saves versioned briefs/manifests, invokes the real local renderer, and exposes technical validation/provenance. It remains a single-machine pilot, not a deployed multi-user application.
+
+**Execution detail:** See [Delivery Routes, Schedule, and Acceptance Checklists](DELIVERY_PLAN.md) for priority routes, target windows, dependencies, reusable checklists, and the gates for moving forward.
 
 ## Stage 0 — Product discovery and foundation
 
@@ -36,7 +38,7 @@
 - [x] Provide a loopback-only browser flow for business offering, audience, objective, differentiators, call to action, manual claims/evidence ledger, and card storyboard.
 - [x] Persist each saved plan as a versioned Markdown brief and JSON campaign manifest without overwriting earlier versions.
 - [x] Render a watermarked 1280×720 draft from the saved version and expose playback/download plus the provenance/technical validation report.
-- [x] Keep local project records and generated artifacts under Git-ignored .workbench/projects/.
+- [x] Keep local project records and generated artifacts under Git-ignored `.workbench/projects/`.
 
 **Scope limit:** The browser UI has no login, role system, authenticated approval, asset uploads, remote access, durable job queue, database, encrypted-at-rest guarantee, deployment, or live ContribQuest walkthrough. All browser renders retain a fixed NOT FOR PUBLICATION watermark. Renderer approval/evidence fields remain assertions, not independently authenticated or verified evidence. A recorded claim reference is not confirmation that the source exists or supports the claim.
 
