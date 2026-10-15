@@ -125,7 +125,7 @@ class RepositoryFoundationTests(unittest.TestCase):
         guide = (ROOT / "docs/RENDERER.md").read_text(encoding="utf-8")
         self.assertIn("FFprobe", guide)
         self.assertIn("source hashes/provenance", guide)
-        self.assertIn("Unwatermarked", guide)
+        self.assertIn("unwatermarked output is blocked", guide)
         self.assertIn("not independently verify remote sources", guide)
         self.assertIn("not a deployed web application", guide)
 
