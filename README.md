@@ -16,7 +16,7 @@ A standalone, internal company production workbench for turning business goals a
 - [FastVideo selective-reuse audit](docs/REUSE_AUDIT.md) — evidence-backed decision not to copy FastVideo Studio or Dreamverse.
 - [Deterministic renderer](docs/RENDERER.md) — campaign manifest, FFmpeg/FFprobe validation, source provenance, and release gates.
 - [License decisions](docs/LICENSING_DECISIONS.md) — code license, content-rights boundaries, and separate project policies.
-- [Notice and license scope](NOTICE.md) — what the root license does and does not cover.
+- [Notice and rights scope](NOTICE.md) — current unlicensed status and boundaries for software, documentation, and media rights.
 - [ADR-0001: separate product repository](docs/decisions/ADR-0001-separate-product-repository.md) — product/framework boundary decision.
 - [Contributing guide](CONTRIBUTING.md) — change, test, and provenance expectations.
 
