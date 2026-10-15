@@ -4,7 +4,7 @@
 
 ## Architectural intent
 
-Keep product concepts independent from any one model, vendor, or inference framework. External systems should be integrated behind explicit adapters. Product-level contracts should remain testable without downloading weights or requiring a GPU.
+Keep product contracts **provider-independent**: concepts should remain independent from any one model, vendor, or inference framework. External systems should be integrated behind explicit adapters. Product-level contracts should remain testable without downloading weights or requiring a GPU.
 
 ## Proposed logical components
 
