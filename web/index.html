@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A local-only Video Workbench for preparing campaign briefs, storyboards, and watermarked draft videos.">
+  <title>Video Workbench — Campaign Pack</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Video Workbench home">
+      <span class="brand-mark" aria-hidden="true">VW</span>
+      <span><strong>Video Workbench</strong><small>LOCAL CAMPAIGN WORKSPACE</small></span>
+    </a>
+    <div class="local-indicator"><span aria-hidden="true"></span> Local machine only</div>
+  </header>
+
+  <main class="page-shell">
+    <section class="page-heading" aria-labelledby="page-title">
+      <p class="eyebrow">WORKFLOW 01 / BUSINESS OFFERING TO VIDEO</p>
+      <div class="heading-line">
+        <div>
+          <h1 id="page-title">Campaign pack</h1>
+          <p>Turn a business offering into an editable brief, storyboard, and technically validated draft video.</p>
+        </div>
+        <span class="draft-tag">DRAFTS ONLY</span>
+      </div>
+      <div class="notice" role="note">
+        Draft renders always carry a <strong>NOT FOR PUBLICATION</strong> watermark. This local tool does not verify claims or rights and does not provide identity-bound approval.
+      </div>
+    </section>
+
+    <div id="app-message" class="message" role="status" aria-live="polite" hidden></div>
+
+    <div class="workspace-grid">
+      <aside class="project-rail" aria-labelledby="projects-heading">
+        <div class="rail-heading">
+          <div><p class="eyebrow">WORKSPACE</p><h2 id="projects-heading">Saved projects</h2></div>
+          <button id="refresh-projects" class="icon-button" type="button" aria-label="Refresh saved projects" title="Refresh projects">↻</button>
+        </div>
+        <p class="muted small">Briefs, manifests, and output files stay in this machine's ignored <code>.workbench/</code> folder.</p>
+        <div id="project-list" class="project-list"><p class="muted small">Loading saved projects…</p></div>
+        <button id="new-project" class="secondary-button full-width" type="button">＋ New project</button>
+      </aside>
+
+      <section class="editor-panel" aria-labelledby="editor-heading">
+        <div class="panel-heading">
+          <div><p class="eyebrow">PROJECT PLAN</p><h2 id="editor-heading">New campaign</h2></div>
+          <span id="version-label" class="version-label">Unsaved</span>
+        </div>
+        <form id="campaign-form">
+          <fieldset>
+            <legend>Business brief</legend>
+            <label for="project-title">Campaign / project title <span class="required">Required</span></label>
+            <input id="project-title" name="project_title" maxlength="160" required placeholder="e.g. Q4 service launch">
+
+            <label for="offering">What are you offering? <span class="required">Required</span></label>
+            <textarea id="offering" name="offering" rows="3" maxlength="2000" required placeholder="Describe the real product, service, or business initiative."></textarea>
+
+            <div class="form-row">
+              <div>
+                <label for="audience">Target audience <span class="required">Required</span></label>
+                <textarea id="audience" name="audience" rows="3" maxlength="1000" required placeholder="Who is this for?"></textarea>
+              </div>
+              <div>
+                <label for="objective">Campaign objective <span class="required">Required</span></label>
+                <textarea id="objective" name="objective" rows="3" maxlength="1000" required placeholder="What should the viewer understand or do?"></textarea>
+              </div>
+            </div>
+
+            <label for="differentiators">Differentiators <span class="optional">Optional</span></label>
+            <textarea id="differentiators" name="differentiators" rows="2" maxlength="2000" placeholder="What is meaningfully different? Identify assumptions rather than inventing proof."></textarea>
+
+            <label for="call-to-action">Call to action <span class="required">Required</span></label>
+            <input id="call-to-action" name="call_to_action" maxlength="500" required placeholder="e.g. Request a demonstration">
+          </fieldset>
+
+          <fieldset>
+            <div class="legend-row"><legend>Storyboard</legend><span class="muted small">Card-based draft renderer · up to 8 scenes</span></div>
+            <p class="muted small">Use concise copy. This first workflow renders title cards only; image, footage, audio upload, and generated shots are not yet part of the UI.</p>
+            <div id="scene-list" class="scene-list"></div>
+            <button id="add-scene" class="tertiary-button" type="button">＋ Add scene</button>
+          </fieldset>
+
+          <div class="form-actions">
+            <button id="save-project" class="primary-button" type="submit">Create project</button>
+            <button id="render-project" class="secondary-button" type="button" disabled>Render watermarked draft</button>
+          </div>
+          <p class="muted small">Saving creates a versioned Markdown brief and JSON campaign manifest. Each edit creates a new version; previous versions and renders are retained locally.</p>
+        </form>
+
+        <section id="artifacts-panel" class="artifacts-panel" aria-labelledby="artifacts-heading" hidden>
+          <div class="panel-heading"><div><p class="eyebrow">OUTPUTS</p><h2 id="artifacts-heading">Campaign artifacts</h2></div><span id="render-status-tag" class="status-pill">Draft</span></div>
+          <div class="artifact-links">
+            <a id="brief-link" href="#">Download brief.md</a>
+            <a id="campaign-link" href="#">Download campaign.json</a>
+            <a id="provenance-link" href="#" hidden>Download render provenance</a>
+          </div>
+          <div id="video-container" class="video-container" hidden>
+            <video id="rendered-video" controls preload="metadata"></video>
+            <a id="video-link" href="#" download>Download watermarked MP4</a>
+          </div>
+          <div id="render-report" class="render-report" hidden>
+            <h3>Technical validation and release gate</h3>
+            <p class="muted small">“Verified” means the media file passed the renderer's checks. It does not mean the claims, rights, or publication are approved.</p>
+            <pre id="render-details"></pre>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <footer class="page-footer">
+      <span>VIDEO WORKBENCH · LOCAL PILOT</span>
+      <span>No cloud APIs · no authentication · no publication workflow</span>
+    </footer>
+  </main>
+</body>
+</html>
