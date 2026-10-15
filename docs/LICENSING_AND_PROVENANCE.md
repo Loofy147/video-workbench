@@ -2,7 +2,9 @@
 
 ## Current repository status
 
-This repository does not yet declare an open-source license. Public repository visibility is not a substitute for an explicit project license, and it does not establish that third-party code, weights, datasets, or assets may be redistributed. Resolve the intended product and contribution model before choosing and adding a `LICENSE` file.
+The first-party software source is covered by the root PolyForm Internal Use License 1.0.0. This source-available license permits internal business use and changes but does not grant a right to distribute the software; it is not OSI-approved open-source software. The root file is copied unchanged from the license steward's versioned repository. Read [license decisions](LICENSING_DECISIONS.md) and [NOTICE.md](../NOTICE.md) for the scope boundary.
+
+The license does not automatically cover third-party SDKs, code, model weights, datasets, APIs, source media, logos, or sample creative content. Public repository visibility is not a substitute for an explicit license. Do not claim the project is open source or permit redistribution under the current grant.
 
 ## Required intake record
 
@@ -34,4 +36,4 @@ Until the repository license and contribution policy are decided, contributions 
 
 ## Decision record
 
-The repository license decision must be recorded in an ADR and reflected consistently in `LICENSE`, `README.md`, and contributor guidance before declaring the project ready for outside contributions.
+The internal-use license and its limitations are recorded in [License Decisions](LICENSING_DECISIONS.md), referenced by the root [README](../README.md), and scoped in [NOTICE.md](../NOTICE.md). Do not invite unrestricted external contributions under the current license. Before changing licensing or accepting outside contributors, verify rights and provenance for all existing material and decide the contributor acceptance process.
