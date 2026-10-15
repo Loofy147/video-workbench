@@ -163,9 +163,9 @@ class BrowserAssetContractTests(unittest.TestCase):
         server = (ROOT / "tools" / "workbench_server.py").read_text(encoding="utf-8")
         self.assertIn('<script src="/assets/app.js" defer></script>', html)
         self.assertIn('href="/assets/styles.css"', html)
-        self.assertNotRegex(html, r"(?i)\\son[a-z]+\\s*=")
+        self.assertNotRegex(html, r"(?i)\son[a-z]+\s*=")
         self.assertIn("textContent", script)
-        self.assertNotRegex(script, r"\\.innerHTML\\s*=|insertAdjacentHTML|document\\.write\\s*\\(")
+        self.assertNotRegex(script, r"\.innerHTML\s*=|insertAdjacentHTML|document\.write\s*\(")
         self.assertIn("script-src 'self'", server)
 
     def test_browser_javascript_parses_when_node_is_available(self):
