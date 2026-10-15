@@ -300,6 +300,7 @@
     artifactsPanel.hidden = false;
     document.querySelector("#brief-link").href = `/api/projects/${selectedProjectId}/files/brief`;
     document.querySelector("#campaign-link").href = `/api/projects/${selectedProjectId}/files/campaign`;
+    document.querySelector("#pack-link").href = `/api/projects/${selectedProjectId}/files/pack`;
     const render = data.project.render;
     videoContainer.hidden = !render;
     renderReport.hidden = !render;
