@@ -150,3 +150,18 @@ Only after Routes 1–3 pass should we spend effort on remote hosting, durable q
 ## Decision log and status reporting
 
 Maintain each cycle's outcome in GitHub issues/PRs. At minimum, report: **completed**, **evidence**, **blocked by**, **risk/unknown**, and **next gate**. Label estimates as estimates and distinguish observed behavior, simulation, inference, and unverified claims. Do not describe this plan as a commitment or the product as beta-ready merely because these dates are written down.
+
+
+## GitHub execution queue
+
+The following issues translate the schedule into trackable work. Target windows are sequencing estimates, not deadlines.
+
+| Window | Work item |
+|---|---|
+| Oct 16–20 | [#2 — Validate the real campaign workflow and acceptance contract](https://github.com/Loofy147/video-workbench/issues/2) |
+| Oct 21–27 | [#3 — Implement bounded local media intake with provenance and rights metadata](https://github.com/Loofy147/video-workbench/issues/3) |
+| Oct 28–Nov 3 | [#4 — Map factual copy to claims and complete the draft campaign pack](https://github.com/Loofy147/video-workbench/issues/4) |
+| Nov 4–10 | [#5 — Specify reviewer authority and the release approval state machine](https://github.com/Loofy147/video-workbench/issues/5) |
+| Nov 11–17 | [#6 — Run beta-readiness review and record the deployment boundary](https://github.com/Loofy147/video-workbench/issues/6) |
+
+Work remains in the local-pilot boundary until the explicit acceptance and security gates pass. The issues are intentionally not presented as proof that implementation has started or that any milestone is complete.
