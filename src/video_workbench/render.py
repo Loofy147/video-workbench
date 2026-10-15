@@ -81,7 +81,7 @@ def _parse_provenance(raw: Any, label: str) -> dict[str, Any]:
     origin = _require_text(raw.get("origin"), f"{label}.provenance.origin", limit=500)
     rights_status = raw.get("rights_status")
     allowed = {"owner_created", "licensed", "permission_confirmed", "public_domain", "unverified"}
-    if rights_status not in allowed:
+    if not isinstance(rights_status, str) or rights_status not in allowed:
         raise RenderError(f"{label}.provenance.rights_status must be one of {sorted(allowed)}.")
     evidence = _require_text(raw.get("evidence", ""), f"{label}.provenance.evidence", optional=True, limit=1000)
     if rights_status in {"licensed", "permission_confirmed", "public_domain"} and not evidence:
@@ -106,7 +106,7 @@ def _parse_claim_evidence(raw: Any) -> list[dict[str, str | None]]:
             raise RenderError(f"{label} must be an object.")
         claim = _require_text(entry.get("claim"), f"{label}.claim", limit=600)
         status = entry.get("status")
-        if status not in allowed_statuses:
+        if not isinstance(status, str) or status not in allowed_statuses:
             raise RenderError(f"{label}.status must be one of {sorted(allowed_statuses)}.")
         evidence = _require_text(entry.get("evidence", ""), f"{label}.evidence", optional=True, limit=1000)
         if status in {"documented-source", "direct-observation"} and not evidence:
@@ -121,7 +121,7 @@ def _parse_approval(raw: Any) -> dict[str, str | None]:
     if not isinstance(raw, dict):
         raise RenderError("approval must be an object when supplied.")
     status = raw.get("status", "draft")
-    if status not in {"draft", "approved", "rejected"}:
+    if not isinstance(status, str) or status not in {"draft", "approved", "rejected"}:
         raise RenderError("approval.status must be draft, approved, or rejected.")
     approved_by = _require_text(raw.get("approved_by", ""), "approval.approved_by", optional=True, limit=200) or None
     approved_at = _require_text(raw.get("approved_at", ""), "approval.approved_at", optional=True, limit=80) or None
@@ -164,7 +164,7 @@ def load_campaign(manifest_path: Path) -> tuple[dict[str, Any], Path, list[dict[
         raise RenderError(f"Cannot read UTF-8 JSON campaign manifest: {exc}") from exc
     if not isinstance(campaign, dict):
         raise RenderError("Campaign manifest root must be a JSON object.")
-    if campaign.get("schema_version") != 1:
+    if type(campaign.get("schema_version")) is not int or campaign.get("schema_version") != 1:
         raise RenderError("schema_version must be 1.")
     project = campaign.get("project")
     if not isinstance(project, dict):
@@ -184,7 +184,7 @@ def load_campaign(manifest_path: Path) -> tuple[dict[str, Any], Path, list[dict[
         raise RenderError("Output width and height must be even for yuv420p/H.264 compatibility.")
     if fps not in SUPPORTED_FPS:
         raise RenderError(f"output.fps must be one of {sorted(SUPPORTED_FPS)}.")
-    if output.get("container", "mp4") != "mp4":
+    if not isinstance(output.get("container", "mp4"), str) or output.get("container", "mp4") != "mp4":
         raise RenderError("Only MP4 output is currently supported.")
     watermark = _require_text(output.get("watermark_text", "INTERNAL REVIEW DRAFT"), "output.watermark_text", optional=True, limit=120)
     requested_output = _require_text(output.get("path", "dist/campaign.mp4"), "output.path", limit=500)
@@ -210,7 +210,7 @@ def load_campaign(manifest_path: Path) -> tuple[dict[str, Any], Path, list[dict[
             raise RenderError(f"Duplicate scene id: {scene_id}")
         seen_ids.add(scene_id)
         kind = raw_scene.get("kind", "card")
-        if kind not in {"card", "image", "video"}:
+        if not isinstance(kind, str) or kind not in {"card", "image", "video"}:
             raise RenderError(f"{label}.kind must be card, image, or video.")
         try:
             duration = float(raw_scene.get("duration_seconds"))
