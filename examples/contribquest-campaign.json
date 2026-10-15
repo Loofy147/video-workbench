@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "project": {
+    "id": "contribquest-campaign-concept-01",
+    "title": "ContribQuest — Explicit criteria, inspectable review"
+  },
+  "output": {
+    "path": "dist/contribquest-concept.mp4",
+    "container": "mp4",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "watermark_text": "CONCEPT DRAFT | NOT LIVE PRODUCT FOOTAGE"
+  },
+  "approval": {
+    "status": "draft"
+  },
+  "claims_evidence": [
+    {
+      "claim": "The prototype documents 1–10 distinct bounty acceptance criteria.",
+      "status": "documented-source",
+      "evidence": "https://github.com/Loofy147/Contribution-bounties-centre-/blob/main/README.md"
+    },
+    {
+      "claim": "The prototype documents criteria snapshots and a per-criterion review with written rationale.",
+      "status": "documented-source",
+      "evidence": "https://github.com/Loofy147/Contribution-bounties-centre-/blob/main/README.md"
+    },
+    {
+      "claim": "The prototype documents accepted-work XP, but does not independently validate XP as a skill measure.",
+      "status": "documented-source",
+      "evidence": "https://github.com/Loofy147/Contribution-bounties-centre-/blob/main/README.md"
+    },
+    {
+      "claim": "Paid bounty entries are listings, not in-app payout processing.",
+      "status": "documented-source",
+      "evidence": "https://github.com/Loofy147/Contribution-bounties-centre-/blob/main/README.md"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "opening",
+      "kind": "card",
+      "duration_seconds": 6,
+      "title": "Useful work needs clear expectations",
+      "body": "A task title is not enough. Contributors and owners need an inspectable definition of done.",
+      "background": "#101b2d"
+    },
+    {
+      "id": "criteria",
+      "kind": "card",
+      "duration_seconds": 6,
+      "title": "Define the acceptance criteria",
+      "body": "The prototype's documented contract allows one to ten distinct criteria for a bounty.",
+      "background": "#152943"
+    },
+    {
+      "id": "submission",
+      "kind": "card",
+      "duration_seconds": 6,
+      "title": "Submit against the agreed target",
+      "body": "The source README documents a preserved snapshot of the criteria used for review.",
+      "background": "#18394b"
+    },
+    {
+      "id": "review",
+      "kind": "card",
+      "duration_seconds": 6,
+      "title": "Review every criterion",
+      "body": "The documented acceptance protocol requires a pass or fail for each criterion and written rationale.",
+      "background": "#1e3e42"
+    },
+    {
+      "id": "revision",
+      "kind": "card",
+      "duration_seconds": 6,
+      "title": "Improve work without losing context",
+      "body": "The documented workflow supports requests for changes, resubmission, and retained review history.",
+      "background": "#344150"
+    },
+    {
+      "id": "xp",
+      "kind": "card",
+      "duration_seconds": 6,
+      "title": "Keep XP in its proper place",
+      "body": "Acceptance currently grants platform XP. It is not an independently validated measure of skill.",
+      "background": "#423c32"
+    },
+    {
+      "id": "limits",
+      "kind": "card",
+      "duration_seconds": 6,
+      "title": "Know what the prototype does not do",
+      "body": "Paid bounty entries are listings. The app does not implement escrow, payment processing, or guaranteed payouts.",
+      "background": "#422f38"
+    },
+    {
+      "id": "closing",
+      "kind": "card",
+      "duration_seconds": 6,
+      "title": "Inspect the workflow. Report the gaps.",
+      "body": "Concept draft based on repository documentation. Live owner/contributor walkthrough and publication approval remain outstanding.",
+      "background": "#101b2d"
+    }
+  ]
+}
