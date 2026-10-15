@@ -25,4 +25,4 @@ This repository is in early discovery. Small, reviewable contributions with clea
 - Record material architecture, licensing, and provider decisions as ADRs.
 - Treat CI success as a necessary check, not as proof of end-to-end product readiness.
 
-The project license and outside-contribution policy are not yet finalized. Maintainers must resolve those decisions before the repository is represented as ready for unrestricted external contributions.
+The first-party software source uses PolyForm Internal Use License 1.0.0. This is source-available, not an OSI-approved open-source license, and it does not grant distribution rights. Do not accept unrestricted external contributions or redistribute the software under current terms. Before inviting outside contributors, the maintainer must review the license choice, confirm ownership/provenance of existing source, and define explicit contributor terms. Do not assume the license covers documentation, assets, media, model weights, or third-party runtimes.
