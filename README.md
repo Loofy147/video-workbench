@@ -28,6 +28,7 @@ A standalone, internal company production workbench for turning business goals a
 The first proposed campaign-pack example is **Contribution Network / ContribQuest**. Before making product claims, use the canonical [Contributions Centre repository](https://github.com/Loofy147/Contribution-bounties-centre-) and its documentation as source evidence. Current limitations and unverified behavior must remain visible in the campaign brief.
 
 - [Pilot scope, claim limits, and proposed demo](docs/PRODUCT_BRIEF.md#pilot-offering-for-the-first-campaign-pack)
+- [Draft ContribQuest campaign brief and storyboard](docs/examples/contribution-network-campaign-brief.md) — source-grounded, owner-review only; not an approved script or finished video.
 - [Current ContribQuest source and status](https://github.com/Loofy147/Contribution-bounties-centre-)
 
 This identifies a pilot offering for Video Workbench; it does not merge the codebases or make Contributions a dependency of Video Workbench.
