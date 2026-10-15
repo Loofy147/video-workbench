@@ -15,6 +15,7 @@ REQUIRED_FILES = (
     "docs/LICENSING_AND_PROVENANCE.md",
     "docs/ROADMAP.md",
     "docs/decisions/ADR-0001-separate-product-repository.md",
+    "docs/examples/contribution-network-campaign-brief.md",
 )
 MARKDOWN_LINK = re.compile(r"!?(?:\[[^\]]*\])\(([^)\s]+)(?:\s+[^)]*)?\)")
 
@@ -59,6 +60,15 @@ class RepositoryFoundationTests(unittest.TestCase):
         self.assertIn("### Defer", brief)
         self.assertIn("provider-independent", architecture)
         self.assertIn("final-mile evaluation", brief)
+
+    def test_pilot_campaign_brief_is_source_grounded_and_discloses_limits(self):
+        brief = (ROOT / "docs/examples/contribution-network-campaign-brief.md").read_text(encoding="utf-8")
+        self.assertIn("Draft for owner review", brief)
+        self.assertIn("1–10 distinct acceptance criteria", brief)
+        self.assertIn("Paid bounty listings are not processed payouts", brief)
+        self.assertIn("five browser scenarios still need live execution", brief)
+        self.assertIn("product-market fit", brief)
+        self.assertIn("No finished video is represented by this document", brief)
 
     def test_product_brief_captures_company_use_and_one_bounded_workflow(self):
         brief = (ROOT / "docs/PRODUCT_BRIEF.md").read_text(encoding="utf-8")
