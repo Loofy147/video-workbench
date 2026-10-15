@@ -69,6 +69,8 @@ class RepositoryFoundationTests(unittest.TestCase):
         self.assertIn("five browser scenarios still need live execution", brief)
         self.assertIn("product-market fit", brief)
         self.assertIn("No finished video is represented by this document", brief)
+        self.assertIn("Open Graph/share-preview metadata", brief)
+        self.assertIn("engineering-task text rather than approved public marketing copy", brief)
 
     def test_product_brief_captures_company_use_and_one_bounded_workflow(self):
         brief = (ROOT / "docs/PRODUCT_BRIEF.md").read_text(encoding="utf-8")
