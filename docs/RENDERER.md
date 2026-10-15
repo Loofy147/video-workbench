@@ -1,6 +1,6 @@
 # Deterministic Campaign Renderer
 
-**Status:** The renderer is implemented and covered by local FFmpeg/FFprobe integration tests. A separate loopback-only browser workflow now orchestrates a restricted card-only campaign path on top of it. This remains a local pilot, not a deployed multi-user application.
+**Status:** The renderer is implemented and covered by local FFmpeg/FFprobe integration tests. A separate loopback-only browser workflow now orchestrates a restricted card-only campaign path on top of it. The renderer is not a deployed web application; the browser interface is a local pilot, not a deployed multi-user application.
 
 ## Purpose and boundaries
 
@@ -63,7 +63,7 @@ Missing executables/fonts, invalid assets, unsafe paths, malformed manifests, fi
 
 ## Approval and rights gates
 
-The default output is watermarked INTERNAL REVIEW DRAFT. An unwatermarked CLI output is blocked unless a timezone-aware approval record is present, every claim has evidence marked documented-source or direct-observation, and sourced media does not have unverified rights status.
+The default output is watermarked INTERNAL REVIEW DRAFT. The existing CLI contract is that unwatermarked output is blocked unless a timezone-aware approval record is present, every claim has evidence marked documented-source or direct-observation, and sourced media does not have unverified rights status.
 
 The browser workflow is stricter by design: it uses a fixed INTERNAL REVIEW DRAFT - NOT FOR PUBLICATION watermark and has no control to remove it. It does not provide authentication, reviewer roles, upload intake, or a publication path.
 
