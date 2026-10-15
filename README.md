@@ -1,16 +1,17 @@
 # Video Workbench
 
-A standalone, internal company production workbench for turning business goals and source materials into reviewable deliverables: business briefs, project scopes, product/service demonstrations, and advertising videos. The first proposed vertical slice is a business offering to video campaign pack. This repository owns the product experience, project/artifact records, orchestration, and delivery controls; it is separate from the FastVideo framework repository.
+A standalone, internal company production workbench for turning business goals and source materials into reviewable deliverables: business briefs, project scopes, product/service demonstrations, and advertising videos. The first implemented workflow is a business offering to video campaign pack. This repository owns the product experience, project/artifact records, orchestration, and delivery controls; it is separate from the FastVideo framework repository.
 
 ## Current state
 
-**Stage:** Product discovery plus a working CLI-renderer vertical slice. The internal-company workflow is scoped, the reuse audit is recorded, and the local renderer now creates and validates real H.264 MP4s with provenance sidecars. A deployed application/UI, live ContribQuest walkthrough, and product release process are still not complete.
+**Stage:** Product discovery plus a working CLI renderer and local-only browser workflow. The browser can save versioned campaign briefs and storyboards, render a watermarked MP4, and expose technical validation/provenance. A deployed multi-user application, asset-upload workflow, identity-bound approval, and live ContribQuest walkthrough are still not complete.
 
 ## Product records
 
 - [Product brief](docs/PRODUCT_BRIEF.md) — hypothesis, scope boundaries, workflow candidate, and discovery exit gate.
-- [Architecture boundaries](docs/ARCHITECTURE.md) — logical responsibilities, provisional job lifecycle, and the initial low-dependency render path.
+- [Architecture boundaries](docs/ARCHITECTURE.md) — logical responsibilities, current local application, and the initial low-dependency render path.
 - [Roadmap and exit gates](docs/ROADMAP.md) — staged implementation plan and evidence gates.
+- [Local browser workbench](docs/LOCAL_WORKBENCH.md) — startup, end-to-end use, local data handling, security boundary, and current gaps.
 - [Licensing and provenance](docs/LICENSING_AND_PROVENANCE.md) — third-party/model intake and asset-handling policy.
 - [FastVideo selective-reuse audit](docs/REUSE_AUDIT.md) — evidence-backed decision not to copy FastVideo Studio or Dreamverse.
 - [Deterministic renderer](docs/RENDERER.md) — campaign manifest, FFmpeg/FFprobe validation, source provenance, and release gates.
@@ -37,17 +38,25 @@ The first proposed campaign-pack example is **Contribution Network / ContribQues
 
 This identifies a pilot offering for Video Workbench; it does not merge the codebases or make Contributions a dependency of Video Workbench.
 
-The first video execution path is implemented as a local CLI renderer. It can assemble text cards, still images, video clips, and optional audio through an installed FFmpeg executable; it validates the MP4 with FFprobe and writes a checksum/provenance sidecar. Generative video and the web UI are not implemented. See the [renderer instructions](docs/RENDERER.md).
+## Run the local browser workbench
 
-## Render a campaign
+From the repository root:
 
-From the repository root, run:
+    python tools/workbench_server.py
 
-```bash
-python tools/render_campaign.py examples/contribquest-campaign.json --output outputs/contribquest-concept.mp4
-```
+Open <http://127.0.0.1:8765/> on the same machine. The local server binds only to loopback; keep its terminal open and press Ctrl+C to stop it. See [Local Browser Workbench](docs/LOCAL_WORKBENCH.md) for operating instructions and limitations.
 
-This example is a watermarked concept draft, not live product footage. The command produces the MP4 and a companion JSON manifest. Use the test command below to run unit and local FFmpeg integration tests.
+The UI captures an offering, audience, objective, differentiators, call to action, and short card storyboard. It writes a versioned Markdown brief and campaign JSON, renders a watermarked 1280×720 MP4, and exposes the output and provenance sidecar. It does not upload media assets or support user accounts, identity-bound approval, remote use, or publication. The fixed draft watermark cannot be removed from the UI.
+
+Project records and generated artifacts are stored locally under .workbench/projects/. This folder is Git-ignored and should not be committed.
+
+## Render a campaign from the CLI
+
+The standalone renderer also supports sourced image/video scenes and optional audio when provenance is supplied. From the repository root:
+
+    python tools/render_campaign.py examples/contribquest-campaign.json --output outputs/contribquest-concept.mp4
+
+This example is a watermarked concept draft, not live product footage. The command produces the MP4 and a companion JSON manifest. See the [renderer instructions](docs/RENDERER.md).
 
 ## Related framework
 
@@ -55,14 +64,12 @@ This example is a watermarked concept draft, not live product footage. The comma
 
 ## Verification
 
-Run the initial foundation checks locally:
+Run the foundation, local-workbench contract, and renderer tests locally:
 
-```bash
-python -m unittest discover --start-directory tests --pattern "test_*.py" --verbose
-```
+    python -m unittest discover --start-directory tests --pattern "test_*.py" --verbose
 
-GitHub Actions runs repository contract checks and FFmpeg/FFprobe renderer tests on pull requests and pushes to `main`. Passing tests verifies this CLI renderer in the tested environment; it does not prove a deployed web application, live ContribQuest behavior, claim truth, publication rights, or production readiness.
+GitHub Actions runs repository contract checks and FFmpeg/FFprobe renderer tests on pull requests and pushes to main. Passing tests verifies the exercised contracts and local media path; it does not prove deployment readiness, live ContribQuest behavior, claim truth, publication rights, or production readiness.
 
 ## Licensing status
 
-This branch proposes the [PolyForm Internal Use License 1.0.0](LICENSE) for first-party software, but the current `main` branch remains unlicensed until the proposal is reviewed and merged. The license is source-available, not OSI-approved open-source software, and does not grant a general distribution right. **Because this repository is currently public, the owner must decide whether it should become private before approving an internal-use license.** Product documents and sample creative content are separately scoped in [NOTICE.md](NOTICE.md). See [license decisions](docs/LICENSING_DECISIONS.md).
+This branch proposes the [PolyForm Internal Use License 1.0.0](LICENSE) for first-party software, but the current main branch remains unlicensed until the proposal is reviewed and merged. The license is source-available, not OSI-approved open-source software, and does not grant a general distribution right. **Because this repository is currently public, the owner must decide whether it should become private before approving an internal-use license.** Product documents and sample creative content are separately scoped in [NOTICE.md](NOTICE.md). See [license decisions](docs/LICENSING_DECISIONS.md).
