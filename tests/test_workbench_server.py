@@ -1,5 +1,6 @@
 from __future__ import annotations
 import json
+import shutil
 import sys
 import tempfile
 import unittest
@@ -152,6 +153,43 @@ class ProjectPersistenceTests(unittest.TestCase):
         failed = app.get_project(project_id)
         self.assertEqual(failed["project"]["state"], "render_failed")
         self.assertIn("FFmpeg is missing", failed["project"]["render_error"])
+
+
+@unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"), "FFmpeg/FFprobe not installed")
+class BrowserRendererIntegrationTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="vw-browser-render-e2e-")
+        self.root = Path(self.temp.name) / "projects"
+        self.root.mkdir(parents=True)
+        self.root_patch = patch.object(app, "PROJECTS_ROOT", self.root)
+        self.root_patch.start()
+        self.addCleanup(self.root_patch.stop)
+        self.addCleanup(self.temp.cleanup)
+
+    def test_saved_browser_campaign_renders_real_mp4_and_provenance(self):
+        created = app.create_project(valid_plan())
+        project_id = created["project"]["id"]
+        result = app.render_project(project_id)
+        project_dir = self.root / project_id
+        video = project_dir / "outputs" / "draft-v1.mp4"
+        sidecar = project_dir / "outputs" / "draft-v1.mp4.manifest.json"
+        self.assertEqual(result["project"]["state"], "rendered_draft")
+        self.assertTrue(video.is_file())
+        self.assertTrue(sidecar.is_file())
+        self.assertGreater(video.stat().st_size, 1_024)
+        saved = json.loads(sidecar.read_text(encoding="utf-8"))
+        self.assertEqual(saved["output"]["video_codec"], "h264")
+        self.assertEqual(saved["output"]["width"], 1280)
+        self.assertEqual(saved["output"]["height"], 720)
+        self.assertTrue(saved["validation"]["ffprobe_passed"])
+        self.assertTrue(saved["validation"]["frame_count_passed"])
+        self.assertEqual(saved["output"]["expected_frame_count"], 210)
+        self.assertEqual(saved["output"]["sha256"], result["render"]["output"]["sha256"])
+        self.assertEqual(saved["release_gate"]["status"], "blocked")
+        self.assertIn("campaign approval is not approved", saved["release_gate"]["blockers"])
+        self.assertIn("NOT FOR PUBLICATION", json.loads(
+            (project_dir / "campaign-v1.json").read_text(encoding="utf-8")
+        )["output"]["watermark_text"])
 
 
 if __name__ == "__main__":
