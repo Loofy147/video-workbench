@@ -9,7 +9,7 @@
 - [ ] Validate the selected workflow, required outputs, review/approval rules, and exclusions against an actual company use case.
 - [ ] Define measurable acceptance criteria and a representative test workload for the brief, concept, and real video output.
 - [x] Audit FastVideo Studio and Dreamverse at an immutable source revision. Decision: copy neither app into the product foundation; use an FFmpeg-backed deterministic assembly path first and reconsider generation only if the workflow proves it needs generated shots.
-- [ ] Decide initial product license and contribution policy; review whether public repository visibility is appropriate while that decision remains open.
+- [x] Select and record PolyForm Internal Use License 1.0.0 for first-party software during the internal-only stage; explicitly reserve documentation/media scope and prohibit claims that the project is OSI-approved open source. Revisit before redistribution or outside contributions.
 - [ ] Maintain CI and inspectable decision records.
 
 **Exit gate:** the product owner confirms the first workflow, accepts the first-render output contract, makes a repository visibility/distribution decision before external contributions, and reviews the source-level reuse audit. A written plan alone is not proof that video execution works.
@@ -18,11 +18,21 @@
 
 - [ ] Define project, business brief, concept/script, review/approval, capability, render request, job, attempt, media/document artifact, result, and error contracts.
 - [ ] Specify legal state transitions, cancellation, timeout, retry, partial-result behavior, artifact versioning, and provenance links.
-- [ ] Implement contract validation and unit tests without a model runtime or GPU dependency.
+- [x] Implement campaign-manifest validation and local render contract tests without a model runtime or GPU dependency. The web UI, persisted project/job state, identity-bound approvals, and deployment remain open.
 - [ ] Add structured logs and correlation IDs with secret redaction.
 - [ ] Represent a stub backend explicitly as test infrastructure.
 
 **Exit gate:** deterministic tests cover successful, invalid, unapproved, cancelled, timeout, and failure flows; test outputs are distinguishable from real generated media.
+
+## Implemented vertical slice — 2026-10-15
+
+- [x] Render title cards, still-image scenes, video clips, and optional background audio through an installed FFmpeg executable.
+- [x] Validate H.264 codec, dimensions, frame rate, expected duration, and optional AAC audio with FFprobe.
+- [x] Write a sidecar manifest with input-manifest hash, source hashes/provenance, tool versions, output hash/size, claim-evidence records, approval state, and release blockers.
+- [x] Reject unsafe relative paths, unsupported media types, invalid limits, duplicate scene IDs, and default overwrite attempts.
+- [x] Block unwatermarked output unless the manifest contains a timezone-aware approval record and supported claim evidence.
+
+**Scope limit:** the executable slice is a local CLI; it does not provide a user-facing application, independently verify evidence URLs, provide identity-bound approvals, or validate the live ContribQuest workflow.
 
 ## Stage 2 — Business offering to video campaign pack
 
