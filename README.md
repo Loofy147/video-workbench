@@ -4,7 +4,7 @@ A standalone, internal company production workbench for turning business goals a
 
 ## Current state
 
-**Stage:** Product discovery and foundation. The first target user, primary job-to-be-done, supported workflow, application stack, and deployment model are not yet locked. Treat proposed workflows and architecture boundaries as hypotheses until validated.
+**Stage:** Product discovery and foundation. The internal-company user, primary job-to-be-done, first campaign-pack workflow, and deterministic first-render direction are recorded as working scope. The product UI/runtime stack, deployment topology, license/distribution model, and actual render pipeline are not yet complete. Treat the workflow as proposed until a real end-to-end export is verified.
 
 ## Product records
 
