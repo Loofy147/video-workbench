@@ -457,12 +457,13 @@ def build_draft_pack(project_id: str) -> Path:
         if record.get("state") == "rendered_draft" and record.get("render_result"):
             output_path = project_dir / "outputs" / f"draft-v{version}.mp4"
             sidecar_path = Path(str(output_path) + ".manifest.json")
-            if output_path.is_file() and sidecar_path.is_file():
-                entries.extend([
-                    (output_path, f"draft-v{version}.mp4", zipfile.ZIP_STORED),
-                    (sidecar_path, f"draft-v{version}.mp4.manifest.json", zipfile.ZIP_DEFLATED),
-                ])
-                render_included = True
+            if not output_path.is_file() or not sidecar_path.is_file():
+                raise RuntimeError("The project is marked rendered, but its MP4 or provenance sidecar is missing; refusing to export an incomplete pack.")
+            entries.extend([
+                (output_path, f"draft-v{version}.mp4", zipfile.ZIP_STORED),
+                (sidecar_path, f"draft-v{version}.mp4.manifest.json", zipfile.ZIP_DEFLATED),
+            ])
+            render_included = True
 
         exports_dir = project_dir / "exports"
         exports_dir.mkdir(parents=True, exist_ok=True)
@@ -691,6 +692,9 @@ class WorkbenchHandler(BaseHTTPRequestHandler):
                 return
             except (RuntimeError, ValueError):
                 self._json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Saved project data is invalid."})
+                return
+            except OSError:
+                self._json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "The draft pack could not be written or read from local storage."})
                 return
             if not artifact:
                 self._json(HTTPStatus.NOT_FOUND, {"error": "Artifact not found."})
