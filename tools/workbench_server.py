@@ -172,7 +172,6 @@ def build_campaign(plan: dict[str, Any], project_id: str, version: int) -> dict[
         ],
         "claims_evidence": plan["claims_evidence"],
         "approval": {"status": "draft"},
-        "claims_evidence": [],
     }
 
 
@@ -210,7 +209,7 @@ def build_brief(plan: dict[str, Any], version: int) -> str:
         "This ledger records owner-entered evidence references or observation notes. The application does not open or independently verify references and does not establish claim truth.",
         "",
         "## Storyboard",
-    ]
+    ])
     for index, scene in enumerate(plan["scenes"], start=1):
         lines.extend([
             "",
