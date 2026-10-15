@@ -44,6 +44,34 @@ class CampaignManifestTests(unittest.TestCase):
     def write_manifest(self):
         self.manifest.write_text(json.dumps(self.sample, indent=2), encoding="utf-8")
 
+    def test_rejects_non_string_enum_values_as_validation_errors(self):
+        base = json.loads(json.dumps(self.sample))
+        cases = [
+            ("boolean schema version", lambda campaign: campaign.update({"schema_version": True})),
+            ("claim status list", lambda campaign: campaign.update({
+                "claims_evidence": [{"claim": "Malformed status", "status": []}]
+            })),
+            ("approval status list", lambda campaign: campaign.update({"approval": {"status": []}})),
+            ("scene kind object", lambda campaign: campaign["scenes"][0].update({"kind": {}})),
+            ("container list", lambda campaign: campaign["output"].update({"container": []})),
+        ]
+        source = self.root / "source.png"
+        source.write_bytes(b"not decoded by the manifest loader")
+        def malformed_rights(campaign):
+            campaign["scenes"][0].update({
+                "kind": "image",
+                "source": "source.png",
+                "provenance": {"origin": "owner-supplied", "rights_status": []},
+            })
+        cases.append(("rights status list", malformed_rights))
+        for label, mutate in cases:
+            with self.subTest(label=label):
+                self.sample = json.loads(json.dumps(base))
+                mutate(self.sample)
+                self.write_manifest()
+                with self.assertRaises(RenderError):
+                    load_campaign(self.manifest)
+
     def test_valid_manifest_is_normalized_with_manifest_checksum(self):
         campaign, root, scenes, audio = load_campaign(self.manifest)
         self.assertEqual(root, self.root.resolve())
