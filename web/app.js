@@ -19,6 +19,7 @@
   const renderReport = document.querySelector("#render-report");
   let selectedProjectId = null;
   let selectedProject = null;
+  let savedPlanSignature = null;
   let busy = false;
 
   function showMessage(text, kind = "info") {
@@ -41,14 +42,13 @@
 
   function setBusy(value) {
     busy = value;
-    saveButton.disabled = value;
-    renderButton.disabled = value || !selectedProjectId;
     document.querySelector("#new-project").disabled = value;
     document.querySelector("#refresh-projects").disabled = value;
-    document.querySelector("#add-scene").disabled = value || sceneList.children.length >= 8;
     for (const control of form.querySelectorAll("input, textarea, select, button")) control.disabled = value;
     saveButton.disabled = value;
-    renderButton.disabled = value || !selectedProjectId;
+    renumberScenes();
+    renumberClaims();
+    syncDirtyState();
   }
 
   function makeField(labelText, control, options = {}) {
@@ -82,6 +82,7 @@
     remove.addEventListener("click", () => {
       card.remove();
       renumberScenes();
+      syncDirtyState();
     });
     header.append(title, remove);
 
@@ -120,6 +121,7 @@
     sceneList.append(card);
     renumberScenes();
     document.querySelector("#add-scene").disabled = sceneList.children.length >= 8 || busy;
+    syncDirtyState();
   }
 
   function renumberScenes() {
@@ -147,6 +149,7 @@
     remove.addEventListener("click", () => {
       card.remove();
       renumberClaims();
+      syncDirtyState();
     });
     header.append(title, remove);
 
@@ -192,6 +195,7 @@
     status.addEventListener("change", () => updateClaimEvidenceRequirement(card));
     updateClaimEvidenceRequirement(card);
     renumberClaims();
+    syncDirtyState();
   }
 
   function updateClaimEvidenceRequirement(card) {
@@ -237,6 +241,38 @@
     };
   }
 
+  function syncDirtyState() {
+    const dirty = Boolean(
+      selectedProjectId &&
+      savedPlanSignature !== null &&
+      JSON.stringify(collectPlan()) !== savedPlanSignature
+    );
+    const alreadyRendered = Boolean(selectedProject?.state === "rendered_draft" && !dirty);
+    if (!busy) {
+      renderButton.disabled = !selectedProjectId || dirty || alreadyRendered;
+      if (!selectedProjectId) {
+        renderButton.textContent = "Render watermarked draft";
+      } else if (dirty) {
+        renderButton.textContent = "Save edits before rendering";
+      } else if (alreadyRendered) {
+        renderButton.textContent = "Rendered · save edits to render again";
+      } else {
+        renderButton.textContent = "Render watermarked draft";
+      }
+    } else {
+      renderButton.disabled = true;
+    }
+
+    const versionLabel = document.querySelector("#version-label");
+    if (!selectedProject) {
+      versionLabel.textContent = "Unsaved";
+    } else {
+      versionLabel.textContent = dirty
+        ? `Version ${selectedProject.version} · unsaved edits`
+        : `Version ${selectedProject.version}`;
+    }
+  }
+
   function fillPlan(plan) {
     form.elements.project_title.value = plan.project_title || "";
     form.elements.offering.value = plan.offering || "";
@@ -255,6 +291,7 @@
     selectedProjectId = data.project.id;
     selectedProject = data.project;
     fillPlan(data.plan);
+    savedPlanSignature = JSON.stringify(collectPlan());
     document.querySelector("#editor-heading").textContent = data.project.title;
     document.querySelector("#version-label").textContent = `Version ${data.project.version}`;
     saveButton.textContent = "Save as new version";
@@ -279,11 +316,13 @@
       if (data.project.render_error) showMessage(data.project.render_error, "error");
     }
     refreshProjects().catch(() => {});
+    syncDirtyState();
   }
 
   function resetProject() {
     selectedProjectId = null;
     selectedProject = null;
+    savedPlanSignature = null;
     form.reset();
     fillPlan({ scenes: DEFAULT_SCENES });
     document.querySelector("#editor-heading").textContent = "New campaign";
@@ -295,6 +334,7 @@
     videoContainer.hidden = true;
     renderReport.hidden = true;
     showMessage("Start with the offering, audience, and objective. Save a project before rendering.");
+    syncDirtyState();
   }
 
   async function refreshProjects() {
@@ -341,6 +381,9 @@
     }
   }
 
+  form.addEventListener("input", syncDirtyState);
+  form.addEventListener("change", syncDirtyState);
+
   form.addEventListener("submit", async event => {
     event.preventDefault();
     if (busy || !form.reportValidity()) return;
@@ -376,8 +419,9 @@
       }
     } finally {
       setBusy(false);
-      renderButton.textContent = "Render watermarked draft";
       renumberScenes();
+      renumberClaims();
+      syncDirtyState();
     }
   });
 
