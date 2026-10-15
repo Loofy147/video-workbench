@@ -26,12 +26,12 @@ Open <http://127.0.0.1:8765/> on the same computer. Keep the terminal open. Pres
 
 ## Typical workflow
 
-1. Enter the actual offering, audience, objective, differentiators, and call to action. Do not treat placeholders as verified claims.
+1. Enter the actual offering, audience, objective, differentiators, and call to action. Track factual statements in the claims/evidence ledger using documented-source, direct-observation, inference, or unverified. Documented-source and direct-observation entries require a reference or observation note.
 2. Edit the storyboard cards and duration. The current UI permits 1–8 cards and caps a storyboard at 90 seconds.
 3. Save the project. The app writes a Markdown brief and a versioned JSON manifest; changes create a new version rather than replacing the old manifest.
 4. Render a draft. The fixed `INTERNAL REVIEW DRAFT - NOT FOR PUBLICATION` watermark cannot be removed from this UI.
 5. Play or download the MP4, and inspect/download the provenance manifest to confirm the renderer version, output checksum, media properties, and release blockers.
-6. Review facts, source evidence, media rights, brand use, privacy, creative quality, and publication permission separately. A technically verified MP4 is not a release approval.
+6. Review facts, source evidence, media rights, brand use, privacy, creative quality, and publication permission separately. Ledger references are user-entered and are not opened or independently verified by the app. A technically verified MP4 is not a release approval.
 
 ## Local data and security boundary
 
@@ -44,6 +44,6 @@ Open <http://127.0.0.1:8765/> on the same computer. Keep the terminal open. Pres
 
 ## Known gaps before beta
 
-This UI does not yet provide asset uploads, structured claim/evidence entry, authenticated review and approval, team collaboration, durable job queues, cancellation/retry history, a database, deployment, retention automation, or a live ContribQuest product walkthrough. It is not a campaign publishing tool.
+This UI does not yet provide asset uploads, automatic claim discovery from storyboard copy, authenticated review and approval, team collaboration, durable job queues, cancellation/retry history, a database, deployment, retention automation, or a live ContribQuest product walkthrough. The ledger is manual and does not establish claim truth. It is not a campaign publishing tool.
 
 The release gate remains a separate concept from technical render success. A watermark and a locally editable approval field would not prove the identity or authority of a reviewer, so this UI exposes neither unwatermarked output nor a pretend authenticated-approval control.
