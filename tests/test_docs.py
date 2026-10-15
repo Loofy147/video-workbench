@@ -73,7 +73,7 @@ class RepositoryFoundationTests(unittest.TestCase):
         self.assertIn("Open Graph/share-preview metadata", brief)
         self.assertIn("engineering-task text rather than approved public marketing copy", brief)
 
-    def test_fastvideo_reuse_audit_records_the_no-copy_decision_and_low-dependency_path(self):
+    def test_fastvideo_reuse_audit_records_no_copy_decision_and_low_dependency_path(self):
         audit = (ROOT / "docs/REUSE_AUDIT.md").read_text(encoding="utf-8")
         self.assertIn("d5253fd71055927f12aa6c4aa679b93a00238851", audit)
         self.assertIn("Do not adopt either application as the Video Workbench product base", audit)
