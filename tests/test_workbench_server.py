@@ -78,6 +78,7 @@ class PlanContractTests(unittest.TestCase):
         self.assertTrue(app.origin_allowed("http://localhost:8765", 8765))
         self.assertFalse(app.origin_allowed("https://localhost:8765", 8765))
         self.assertFalse(app.origin_allowed("http://127.0.0.1:8766", 8765))
+        self.assertFalse(app.origin_allowed("http://[::1]:8765", 8765))
         self.assertFalse(app.origin_allowed("http://attacker.example", 8765))
         self.assertFalse(app.origin_allowed("null", 8765))
 
