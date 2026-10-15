@@ -106,7 +106,7 @@ def normalize_plan(payload: Any) -> dict[str, Any]:
             raise ValueError(f"{label} must be an object.")
         claim_text = _text(raw_claim.get("claim"), f"{label} text", limit=600)
         status = raw_claim.get("status")
-        if status not in allowed_claim_statuses:
+        if not isinstance(status, str) or status not in allowed_claim_statuses:
             raise ValueError(f"{label} status must be one of {sorted(allowed_claim_statuses)}.")
         evidence = _text(raw_claim.get("evidence", ""), f"{label} evidence", required=False, limit=1_000)
         if status in {"documented-source", "direct-observation"} and not evidence:
