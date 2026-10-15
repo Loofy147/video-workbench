@@ -56,9 +56,9 @@ class RepositoryFoundationTests(unittest.TestCase):
     def test_provider_selection_is_not_locked_in_foundation_docs(self):
         brief = (ROOT / "docs/PRODUCT_BRIEF.md").read_text(encoding="utf-8")
         architecture = (ROOT / "docs/ARCHITECTURE.md").read_text(encoding="utf-8")
-        self.assertIn("Deferred", brief)
+        self.assertIn("### Defer", brief)
         self.assertIn("provider-independent", architecture)
-        self.assertIn("remain open", brief)
+        self.assertIn("final-mile evaluation", brief)
 
     def test_product_brief_captures_company_use_and_one_bounded_workflow(self):
         brief = (ROOT / "docs/PRODUCT_BRIEF.md").read_text(encoding="utf-8")
