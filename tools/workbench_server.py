@@ -95,6 +95,25 @@ def normalize_plan(payload: Any) -> dict[str, Any]:
         "call_to_action": _text(payload.get("call_to_action"), "Call to action", limit=500),
         "scenes": [],
     }
+    raw_claims = payload.get("claims_evidence", [])
+    if not isinstance(raw_claims, list) or len(raw_claims) > 30:
+        raise ValueError("Claims and evidence must be a list with at most 30 entries.")
+    allowed_claim_statuses = {"documented-source", "direct-observation", "inference", "unverified"}
+    claims: list[dict[str, str | None]] = []
+    for index, raw_claim in enumerate(raw_claims, start=1):
+        label = f"Claim {index}"
+        if not isinstance(raw_claim, dict):
+            raise ValueError(f"{label} must be an object.")
+        claim_text = _text(raw_claim.get("claim"), f"{label} text", limit=600)
+        status = raw_claim.get("status")
+        if status not in allowed_claim_statuses:
+            raise ValueError(f"{label} status must be one of {sorted(allowed_claim_statuses)}.")
+        evidence = _text(raw_claim.get("evidence", ""), f"{label} evidence", required=False, limit=1_000)
+        if status in {"documented-source", "direct-observation"} and not evidence:
+            raise ValueError(f"{label} needs an evidence URL or observation note for status {status}.")
+        claims.append({"claim": claim_text, "status": status, "evidence": evidence or None})
+    plan["claims_evidence"] = claims
+
     raw_scenes = payload.get("scenes")
     if not isinstance(raw_scenes, list) or not 1 <= len(raw_scenes) <= MAX_SCENES:
         raise ValueError(f"Storyboard must contain between 1 and {MAX_SCENES} scenes.")
@@ -151,6 +170,7 @@ def build_campaign(plan: dict[str, Any], project_id: str, version: int) -> dict[
             }
             for index, scene in enumerate(plan["scenes"], start=1)
         ],
+        "claims_evidence": plan["claims_evidence"],
         "approval": {"status": "draft"},
         "claims_evidence": [],
     }
@@ -176,6 +196,18 @@ def build_brief(plan: dict[str, Any], version: int) -> str:
         "",
         "## Call to action",
         plan["call_to_action"],
+        "",
+        "## Claims and evidence ledger",
+    ]
+    if plan["claims_evidence"]:
+        for item in plan["claims_evidence"]:
+            evidence = item["evidence"] or "No evidence reference supplied."
+            lines.append(f"- {item['claim']} — status: {item['status']}; reference/note: {evidence}")
+    else:
+        lines.append("No claims have been explicitly tracked yet. Review factual statements in the storyboard separately.")
+    lines.extend([
+        "",
+        "This ledger records owner-entered evidence references or observation notes. The application does not open or independently verify references and does not establish claim truth.",
         "",
         "## Storyboard",
     ]
