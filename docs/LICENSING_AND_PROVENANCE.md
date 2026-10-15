@@ -2,9 +2,9 @@
 
 ## Current repository status
 
-This PR branch proposes PolyForm Internal Use License 1.0.0 for first-party software; current `main` remains unlicensed until an authorized merge. The proposal permits internal business use and changes but does not grant a general right to distribute the software, and it is not OSI-approved open-source software. The root text is copied unchanged from the license steward's versioned repository. Read [license decisions](LICENSING_DECISIONS.md) and [NOTICE.md](../NOTICE.md) for scope.
+**No project license is selected.** The current branch deliberately does not add a root `LICENSE` file because the repository is public and the owner has not decided whether the project is internal-only or intended for broad public collaboration/adoption. Until this decision is made, do not imply that first-party code may be reused or redistributed under a general project license, and do not invite unrestricted outside contributions.
 
-**Visibility decision required:** this GitHub repository is currently public. Do not merge the PolyForm proposal until the owner decides whether to make the repository private; if public distribution/collaboration is intended, choose a different license grant consistent with that intent. The proposal does not automatically cover third-party SDKs, code, model weights, datasets, APIs, source media, logos, or sample creative content.
+PolyForm Internal Use was evaluated as one internal-use option, but it is not adopted by this change. If public distribution or outside adoption is intended, choose a compatible license instead. Any future license decision must separately assess existing code provenance and the rights for third-party SDKs, documentation, model weights, datasets, APIs, source media, logos, and sample creative content. Read [license decisions](LICENSING_DECISIONS.md) and [NOTICE.md](../NOTICE.md).
 
 ## Required intake record
 
@@ -36,4 +36,4 @@ Until the repository license and contribution policy are decided, contributions 
 
 ## Decision record
 
-The internal-use license and its limitations are recorded in [License Decisions](LICENSING_DECISIONS.md), referenced by the root [README](../README.md), and scoped in [NOTICE.md](../NOTICE.md). Do not invite unrestricted external contributions under the current license. Before changing licensing or accepting outside contributors, verify rights and provenance for all existing material and decide the contributor acceptance process.
+The unresolved license choice and rights boundaries are recorded in [License Decisions](LICENSING_DECISIONS.md), referenced by the root [README](../README.md), and scoped in [NOTICE.md](../NOTICE.md). Before selecting a license or accepting outside contributors, verify rights and provenance for existing material and decide the contributor acceptance process.
