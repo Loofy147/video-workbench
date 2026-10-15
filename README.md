@@ -4,7 +4,7 @@ A standalone, internal company production workbench for turning business goals a
 
 ## Current state
 
-**Stage:** Product discovery and foundation. The internal-company user, primary job-to-be-done, first campaign-pack workflow, and deterministic first-render direction are recorded as working scope. The product UI/runtime stack, deployment topology, license/distribution model, and actual render pipeline are not yet complete. Treat the workflow as proposed until a real end-to-end export is verified.
+**Stage:** Product discovery plus a working CLI-renderer vertical slice. The internal-company workflow is scoped, the reuse audit is recorded, and the local renderer now creates and validates real H.264 MP4s with provenance sidecars. A deployed application/UI, live ContribQuest walkthrough, and product release process are still not complete.
 
 ## Product records
 
@@ -12,7 +12,10 @@ A standalone, internal company production workbench for turning business goals a
 - [Architecture boundaries](docs/ARCHITECTURE.md) — logical responsibilities, provisional job lifecycle, and the initial low-dependency render path.
 - [Roadmap and exit gates](docs/ROADMAP.md) — staged implementation plan and evidence gates.
 - [Licensing and provenance](docs/LICENSING_AND_PROVENANCE.md) — third-party/model intake and asset-handling policy.
-- [FastVideo selective-reuse audit](docs/REUSE_AUDIT.md) — evidence-backed decision not to copy FastVideo Studio or Dreamverse; first render path uses local media assembly.
+- [FastVideo selective-reuse audit](docs/REUSE_AUDIT.md) — evidence-backed decision not to copy FastVideo Studio or Dreamverse.
+- [Deterministic renderer](docs/RENDERER.md) — campaign manifest, FFmpeg/FFprobe validation, source provenance, and release gates.
+- [License decisions](docs/LICENSING_DECISIONS.md) — code license, content-rights boundaries, and separate project policies.
+- [Notice and license scope](NOTICE.md) — what the root license does and does not cover.
 - [ADR-0001: separate product repository](docs/decisions/ADR-0001-separate-product-repository.md) — product/framework boundary decision.
 - [Contributing guide](CONTRIBUTING.md) — change, test, and provenance expectations.
 
@@ -34,7 +37,17 @@ The first proposed campaign-pack example is **Contribution Network / ContribQues
 
 This identifies a pilot offering for Video Workbench; it does not merge the codebases or make Contributions a dependency of Video Workbench.
 
-The first video execution path is planned as deterministic assembly of approved footage, graphics, captions, and optional audio through an installed FFmpeg executable. Generative video is optional and is not yet implemented.
+The first video execution path is implemented as a local CLI renderer. It can assemble text cards, still images, video clips, and optional audio through an installed FFmpeg executable; it validates the MP4 with FFprobe and writes a checksum/provenance sidecar. Generative video and the web UI are not implemented. See the [renderer instructions](docs/RENDERER.md).
+
+## Render a campaign
+
+From the repository root, run:
+
+```bash
+python tools/render_campaign.py examples/contribquest-campaign.json --output outputs/contribquest-concept.mp4
+```
+
+This example is a watermarked concept draft, not live product footage. The command produces the MP4 and a companion JSON manifest. Use the test command below to run unit and local FFmpeg integration tests.
 
 ## Related framework
 
@@ -48,8 +61,8 @@ Run the initial foundation checks locally:
 python -m unittest discover --start-directory tests --pattern "test_*.py" --verbose
 ```
 
-GitHub Actions runs the same tests on pull requests and pushes to `main`. These are documentation/foundation checks only; they do not prove the product pipeline is implemented or production-ready.
+GitHub Actions runs repository contract checks and FFmpeg/FFprobe renderer tests on pull requests and pushes to `main`. Passing tests verifies this CLI renderer in the tested environment; it does not prove a deployed web application, live ContribQuest behavior, claim truth, publication rights, or production readiness.
 
 ## Licensing status
 
-The project license has not yet been selected. See [licensing and provenance](docs/LICENSING_AND_PROVENANCE.md) before contributing reusable code or redistributing project materials.
+The first-party software source is covered by the [PolyForm Internal Use License 1.0.0](LICENSE). This is source-available, not OSI-approved open-source software, and it does not grant a right to distribute the software. Product documents and sample creative content are separately scoped in [NOTICE.md](NOTICE.md). Review [license decisions](docs/LICENSING_DECISIONS.md) before external contributions or any change from internal use.
