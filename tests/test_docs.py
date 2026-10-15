@@ -118,7 +118,7 @@ class RepositoryFoundationTests(unittest.TestCase):
         self.assertIn("no license is selected", decisions)
         self.assertIn("No project license is selected", notice)
         self.assertIn("No project license is selected in this PR", readme)
-        self.assertIn("before accepting outside contributors", decisions.lower())
+        self.assertIn("do not accept unrestricted outside contributions", decisions.lower())
 
     def test_renderer_docs_cover_output_validation_and_claim_boundaries(self):
         guide = (ROOT / "docs/RENDERER.md").read_text(encoding="utf-8")
