@@ -65,4 +65,4 @@ GitHub Actions runs repository contract checks and FFmpeg/FFprobe renderer tests
 
 ## Licensing status
 
-The first-party software source is covered by the [PolyForm Internal Use License 1.0.0](LICENSE). This is source-available, not OSI-approved open-source software, and it does not grant a right to distribute the software. Product documents and sample creative content are separately scoped in [NOTICE.md](NOTICE.md). Review [license decisions](docs/LICENSING_DECISIONS.md) before external contributions or any change from internal use.
+This branch proposes the [PolyForm Internal Use License 1.0.0](LICENSE) for first-party software, but the current `main` branch remains unlicensed until the proposal is reviewed and merged. The license is source-available, not OSI-approved open-source software, and does not grant a general distribution right. **Because this repository is currently public, the owner must decide whether it should become private before approving an internal-use license.** Product documents and sample creative content are separately scoped in [NOTICE.md](NOTICE.md). See [license decisions](docs/LICENSING_DECISIONS.md).
