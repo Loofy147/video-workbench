@@ -88,7 +88,7 @@ These are product directions, not a commitment to ship all output types in the f
 - Advanced timeline editing, complex compositing, or a full professional editing suite unless the selected workflow proves they are necessary.
 - Commitment to a specific model, provider, paid API, GPU platform, or deployment topology before the final-mile evaluation.
 - Model weights, benchmark claims, and provider bake-offs before a representative workload and acceptance rubric exist.
-- A mandatory dependency on a generative model, hosted inference provider, GPU platform, or downloaded model weights for the first video export.
+- Copying or adapting FastVideo Studio/Dreamverse code without a concrete need and a component-level, immutable-revision license, dependency, build/test, security, and adaptation-cost review.
 
 ## Architecture principles
 
@@ -111,5 +111,7 @@ Do not call the MVP scope complete until the repository records:
 - Acceptance criteria for both document artifacts and the video artifact.
 - A review/approval step and handling for missing facts or disallowed claims.
 - A representative test workload and evaluation rubric.
-- A documented plan for evaluating real video backends at the final-mile gate.
-- A documented plan for evaluating real video backends at the final-mile gate.
+- The completed [FastVideo Studio/Dreamverse selective-reuse audit](REUSE_AUDIT.md), including the no-copy decision and why deterministic media assembly is the first execution path.
+- The initial render-output contract and explicit failure behavior when FFmpeg, a codec, or a required asset is unavailable.
+- A documented plan for evaluating optional generative video backends at the final-mile gate.
+- An explicit owner decision on repository visibility and distribution before external contributions or confidential assets are introduced.
