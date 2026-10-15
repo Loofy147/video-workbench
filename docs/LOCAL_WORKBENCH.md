@@ -30,7 +30,7 @@ Open <http://127.0.0.1:8765/> on the same computer. Keep the terminal open. Pres
 2. Edit the storyboard cards and duration. The current UI permits 1–8 cards and caps a storyboard at 90 seconds.
 3. Save the project. The app writes a Markdown brief and a versioned JSON manifest; changes create a new version rather than replacing the old manifest.
 4. Render a draft. The fixed `INTERNAL REVIEW DRAFT - NOT FOR PUBLICATION` watermark cannot be removed from this UI.
-5. Play or download the MP4, and inspect/download the provenance manifest to confirm the renderer version, output checksum, media properties, and release blockers.
+5. Download the campaign pack ZIP. Before rendering it contains the current brief, campaign manifest, and a `PACK-STATUS.txt`; after a successful render it also includes the watermarked MP4 and provenance sidecar. Play or download the MP4 and inspect its validation/release blockers.
 6. Review facts, source evidence, media rights, brand use, privacy, creative quality, and publication permission separately. Ledger references are user-entered and are not opened or independently verified by the app. A technically verified MP4 is not a release approval.
 
 ## Local data and security boundary
@@ -40,7 +40,7 @@ Open <http://127.0.0.1:8765/> on the same computer. Keep the terminal open. Pres
 - Project folders and versioned artifacts are saved under `.workbench/projects/`. `.workbench/` is ignored by Git and should not be committed. Store only material you are permitted to keep on this machine.
 - There is no login, role system, remote access, database, queue, backup, or encrypted-at-rest store. Loopback-only is a useful boundary for a local pilot, not a substitute for a production threat model. Do not expose the server through a tunnel, reverse proxy, or LAN port.
 - Rendering is a synchronous local request; a long render occupies the request until it completes. Stop the server only after the render request has returned.
-- Saving a new version retains earlier versioned briefs, manifests, and completed renders. Delete the `.workbench/projects/<project-id>/` folder to remove a project and its local artifacts; back it up separately if retention is required.
+- The ZIP export is scoped to the current version and states `NOT FOR PUBLICATION`; it is a draft hand-off package, not an approved release. Saving a new version retains earlier versioned briefs, manifests, and completed renders. Delete the `.workbench/projects/<project-id>/` folder to remove a project and its local artifacts; back it up separately if retention is required.
 
 ## Known gaps before beta
 
