@@ -37,6 +37,10 @@ Use **Contribution Network / its current ContribQuest prototype** as the first r
 
 Create a concise product explainer/demo that communicates the problem, the contribution/bounty workflow, and how work is reviewed. A proposed initial target is a 45–60 second video, but timing and format remain acceptance choices to validate.
 
+### Draft campaign pack
+
+A source-grounded, owner-review draft brief and timed storyboard is maintained at [docs/examples/contribution-network-campaign-brief.md](examples/contribution-network-campaign-brief.md). It separates documented claims from unverified live behavior, makes the absence of in-app payout processing explicit, and prohibits claims of production readiness or validated market demand. The script, CTA, format, and publication remain unapproved until the actual application is inspected and the owner reviews the pack.
+
 Ground the script and visuals in inspected source material:
 - A bounty can define 1–10 distinct acceptance criteria.
 - A submitted contribution is reviewed against the preserved criteria snapshot.
