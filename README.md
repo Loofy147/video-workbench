@@ -9,9 +9,10 @@ A standalone, internal company production workbench for turning business goals a
 ## Product records
 
 - [Product brief](docs/PRODUCT_BRIEF.md) — hypothesis, scope boundaries, workflow candidate, and discovery exit gate.
-- [Architecture boundaries](docs/ARCHITECTURE.md) — logical responsibilities and provisional job lifecycle.
+- [Architecture boundaries](docs/ARCHITECTURE.md) — logical responsibilities, provisional job lifecycle, and the initial low-dependency render path.
 - [Roadmap and exit gates](docs/ROADMAP.md) — staged implementation plan and evidence gates.
 - [Licensing and provenance](docs/LICENSING_AND_PROVENANCE.md) — third-party/model intake and asset-handling policy.
+- [FastVideo selective-reuse audit](docs/REUSE_AUDIT.md) — evidence-backed decision not to copy FastVideo Studio or Dreamverse; first render path uses local media assembly.
 - [ADR-0001: separate product repository](docs/decisions/ADR-0001-separate-product-repository.md) — product/framework boundary decision.
 - [Contributing guide](CONTRIBUTING.md) — change, test, and provenance expectations.
 
@@ -32,6 +33,8 @@ The first proposed campaign-pack example is **Contribution Network / ContribQues
 - [Current ContribQuest source and status](https://github.com/Loofy147/Contribution-bounties-centre-)
 
 This identifies a pilot offering for Video Workbench; it does not merge the codebases or make Contributions a dependency of Video Workbench.
+
+The first video execution path is planned as deterministic assembly of approved footage, graphics, captions, and optional audio through an installed FFmpeg executable. Generative video is optional and is not yet implemented.
 
 ## Related framework
 
