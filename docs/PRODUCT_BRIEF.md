@@ -24,10 +24,10 @@ When the company has a product/service offering, business objective, or initiati
 2. **Draft the brief.** Produce a structured creative brief from the source information. Keep assumptions and missing facts visible; require user review of claims and sensitive details before moving forward.
 3. **Develop the video concept.** Generate a proposed script, scene/shot outline, duration target, style notes, aspect ratio, captions, and call to action from the approved brief.
 4. **Review and revise.** Let the user edit/approve the brief and concept before media generation or assembly. Preserve revisions and the relationship between outputs.
-5. **Produce the video.** Route the approved request through a provider-neutral capability contract to a chosen video backend when one is selected. Early contract/workflow tests may use an explicitly labeled stub, but a stub must never be represented as actual model execution.
+5. **Produce the video (MVP path).** Assemble approved screen recordings, still images, title/motion cards, captions, and optional approved audio into a real MP4 through a product-owned rendering contract backed initially by an installed FFmpeg executable. This deterministic assembly path is the default because it can deliver a real company video without model weights, a GPU, or a remote generation account. Model-based generation may be added as a separate optional adapter after the baseline workflow works. A mock/stub must never be represented as a real render or real model execution.
 6. **Inspect and export.** Show the video result or an actionable failure, retain the input/settings/backend and job metadata, and export the approved video with its brief, script, storyboard/shot outline, caption/copy, and output details.
 
-This campaign pack is the first vertical slice because it connects business context, a required planning artifact, a visual output, review, and export in one traceable workflow. The brief and concept must remain useful deliverables even when video generation fails or is not yet configured.
+This campaign pack is the first vertical slice because it connects business context, planning artifacts, media assembly, review, and export in one traceable workflow. The brief and concept remain useful if rendering fails; rendering failure must return an actionable reason and preserve inputs for diagnosis.
 
 ## Pilot offering for the first campaign pack
 
@@ -88,12 +88,12 @@ These are product directions, not a commitment to ship all output types in the f
 - Advanced timeline editing, complex compositing, or a full professional editing suite unless the selected workflow proves they are necessary.
 - Commitment to a specific model, provider, paid API, GPU platform, or deployment topology before the final-mile evaluation.
 - Model weights, benchmark claims, and provider bake-offs before a representative workload and acceptance rubric exist.
-- Adoption of FastVideo Studio/Dreamverse code before the selective-reuse, source/license, dependency, build/test, and security audit is recorded.
+- A mandatory dependency on a generative model, hosted inference provider, GPU platform, or downloaded model weights for the first video export.
 
 ## Architecture principles
 
 - Keep product and domain contracts provider-independent.
-- Use explicit adapters for video generation, document generation, and media-processing capabilities.
+- Use a product-owned media-rendering contract. The first execution adapter assembles approved media using an installed FFmpeg executable; model-based generation remains an optional adapter, not a baseline dependency.
 - Treat each deliverable as a versioned artifact linked to its source project, inputs, review state, and generation/job history.
 - Record job lifecycle states, errors, timestamps, execution identity, and relevant settings without leaking secrets.
 - Do not embed large media bytes in job records; store references and metadata.
@@ -101,7 +101,7 @@ These are product directions, not a commitment to ship all output types in the f
 
 ## Success criteria to validate
 
-For the first demonstrable workflow, a reviewer should be able to start from a real company offering, inspect and approve the brief and script, see how the video was produced or why it failed, and export the resulting assets with their provenance. Define measurable quality, duration, aspect-ratio, brand/claims, runtime, and cost criteria before selecting the real backend. No real inference capability should be claimed without an actual output and execution trace.
+For the first demonstrable workflow, a reviewer should be able to start from the Contribution Network/ContribQuest offering, inspect and approve the brief and script, render and play a real MP4, inspect the source manifest, and export the video plus the brief, script/storyboard, captions, claims/evidence ledger, and metadata. The proposed first export is 16:9 H.264/AAC MP4 at 1920×1080 and 30 fps, with 45–60 seconds as the target duration; validate the actual file with media probing and a playback check. If FFmpeg or a required codec is unavailable, return an actionable failure rather than a fake success. Provider/model quality and cost evaluation is separate and remains deferred until there is a demonstrated need for generated shots.
 
 ## Discovery exit gate
 
@@ -111,5 +111,5 @@ Do not call the MVP scope complete until the repository records:
 - Acceptance criteria for both document artifacts and the video artifact.
 - A review/approval step and handling for missing facts or disallowed claims.
 - A representative test workload and evaluation rubric.
-- The FastVideo Studio/Dreamverse selective-reuse findings.
+- A documented plan for evaluating real video backends at the final-mile gate.
 - A documented plan for evaluating real video backends at the final-mile gate.
