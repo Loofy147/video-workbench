@@ -1,7 +1,7 @@
 # Notice and License Scope
 
-The root LICENSE is the unmodified PolyForm Internal Use License 1.0.0. For this repository, the grant is intended to cover first-party software source under src/, tools/, tests/, and the GitHub Actions workflow that tests that source. It does not grant a license to any third-party component.
+**No root project license is selected at this time.** This repository is publicly visible, but public visibility alone is not a general license to use, modify, or redistribute first-party source or content beyond rights that may arise under applicable platform terms and law. All rights not expressly granted remain reserved.
 
-The following remain separately reserved unless a file explicitly says otherwise: product/business-model prose, campaign briefs and scripts, brand names and logos, screenshots, sample creative content, externally sourced or user-provided media, model weights, datasets, and generated media. A software license is not a substitute for a source/provenance and rights record.
+The intended scope of a future software license must be decided separately from rights to product/business-model prose, campaign briefs and scripts, brand names and logos, screenshots, sample creative content, externally sourced or user-provided media, model weights, datasets, and generated media. A software license is not a substitute for a source/provenance and asset-rights record.
 
-This notice clarifies the intended scope of the repository license; it does not modify the PolyForm license text. The owner must revisit this scope if the repository starts accepting outside contributions or if the product is distributed externally.
+No license file is included in this change because the owner has not yet decided whether the project should remain public for broad collaboration/adoption or become private for internal-only use. Revisit this notice before accepting outside contributions or distributing the software. The license of third-party components remains governed by their own terms.
