@@ -13,6 +13,7 @@ REQUIRED_FILES = (
     "docs/PRODUCT_BRIEF.md",
     "docs/ARCHITECTURE.md",
     "docs/LICENSING_AND_PROVENANCE.md",
+    "docs/REUSE_AUDIT.md",
     "docs/ROADMAP.md",
     "docs/decisions/ADR-0001-separate-product-repository.md",
     "docs/examples/contribution-network-campaign-brief.md",
@@ -71,6 +72,23 @@ class RepositoryFoundationTests(unittest.TestCase):
         self.assertIn("No finished video is represented by this document", brief)
         self.assertIn("Open Graph/share-preview metadata", brief)
         self.assertIn("engineering-task text rather than approved public marketing copy", brief)
+
+    def test_fastvideo_reuse_audit_records_the_no-copy_decision_and_low-dependency_path(self):
+        audit = (ROOT / "docs/REUSE_AUDIT.md").read_text(encoding="utf-8")
+        self.assertIn("d5253fd71055927f12aa6c4aa679b93a00238851", audit)
+        self.assertIn("Do not adopt either application as the Video Workbench product base", audit)
+        self.assertIn("deterministic local media-assembly path", audit)
+        self.assertIn("allow_origins=[\"*\"]", audit)
+        self.assertIn("No FastVideo source or model artifacts were copied", audit)
+        self.assertIn("repository is currently public and has no selected project license", audit)
+
+    def test_ci_actions_are_pinned_to_full_commit_shas_with_release_comments(self):
+        workflow = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        for action in ("checkout", "setup-python"):
+            self.assertRegex(
+                workflow,
+                rf"(?m)^\s+uses: actions/{action}@[0-9a-f]{{40}}\s+# v\d+\.\d+\.\d+\s*$",
+            )
 
     def test_product_brief_captures_company_use_and_one_bounded_workflow(self):
         brief = (ROOT / "docs/PRODUCT_BRIEF.md").read_text(encoding="utf-8")
