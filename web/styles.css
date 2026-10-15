@@ -85,6 +85,15 @@ input::placeholder, textarea::placeholder { color: #9aa5b3; }
 .legend-row { margin-bottom: 5px; }
 .legend-row legend { margin-bottom: 0; }
 .legend-row .muted { text-align: right; }
+.claim-list { display: grid; gap: 10px; margin: 11px 0; }
+.claim-card { padding: 13px; border: 1px solid var(--line); border-radius: 8px; background: #fbfcfe; }
+.claim-card-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 7px; }
+.claim-card-header h3 { margin: 0; color: #53657b; font-size: 11px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.remove-claim { padding: 4px 7px; border: 1px solid #e0caca; border-radius: 5px; background: #fff; color: #8f3e3e; cursor: pointer; font-size: 10px; }
+.claim-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(155px, .7fr) minmax(0, 1.15fr); gap: 12px; align-items: start; }
+.claim-grid label { margin-top: 8px; }
+.claim-grid select { display: block; width: 100%; min-width: 0; min-height: 39px; padding: 9px 10px; border: 1px solid #ccd6e1; border-radius: 7px; background: white; color: var(--ink); font-size: 11px; }
+.claim-grid textarea { min-height: 62px; }
 .scene-list { display: grid; gap: 12px; }
 .scene-card { padding: 15px; border: 1px solid var(--line); border-radius: 9px; background: #fbfcfe; }
 .scene-card-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
@@ -120,7 +129,7 @@ input::placeholder, textarea::placeholder { color: #9aa5b3; }
   .brand strong { font-size: 13px; }
   .brand small { font-size: 8px; }
   .heading-line { align-items: flex-start; }
-  .form-row, .scene-grid { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .form-row, .scene-grid, .claim-grid { grid-template-columns: minmax(0, 1fr); gap: 4px; }
   .project-list { grid-template-columns: minmax(0, 1fr); }
   .editor-panel { padding: 19px 14px; }
   .page-footer { flex-direction: column; gap: 6px; }
