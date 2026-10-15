@@ -13,10 +13,17 @@ REQUIRED_FILES = (
     "docs/PRODUCT_BRIEF.md",
     "docs/ARCHITECTURE.md",
     "docs/LICENSING_AND_PROVENANCE.md",
+    "docs/LICENSING_DECISIONS.md",
+    "docs/RENDERER.md",
     "docs/REUSE_AUDIT.md",
     "docs/ROADMAP.md",
     "docs/decisions/ADR-0001-separate-product-repository.md",
     "docs/examples/contribution-network-campaign-brief.md",
+    "LICENSE",
+    "NOTICE.md",
+    "src/video_workbench/render.py",
+    "tests/test_renderer.py",
+    "examples/contribquest-campaign.json",
 )
 MARKDOWN_LINK = re.compile(r"!?(?:\[[^\]]*\])\(([^)\s]+)(?:\s+[^)]*)?\)")
 
@@ -102,6 +109,25 @@ class RepositoryFoundationTests(unittest.TestCase):
         self.assertIn("there is no escrow, payment processing, or guaranteed payout", brief)
         self.assertIn("XP is not independently validated as a measure of skill", brief)
         self.assertIn("not as proven production-ready infrastructure", brief)
+
+
+    def test_license_scope_and_source_available_status_are_explicit(self):
+        license_text = (ROOT / "LICENSE").read_text(encoding="utf-8")
+        decisions = (ROOT / "docs/LICENSING_DECISIONS.md").read_text(encoding="utf-8")
+        notice = (ROOT / "NOTICE.md").read_text(encoding="utf-8")
+        self.assertIn("PolyForm Internal Use License 1.0.0", license_text)
+        self.assertIn("you may not distribute the software", license_text)
+        self.assertIn("not OSI-approved open-source software", decisions)
+        self.assertIn("outside contributors", decisions)
+        self.assertIn("third-party component", notice)
+
+    def test_renderer_docs_cover_output_validation_and_claim_boundaries(self):
+        guide = (ROOT / "docs/RENDERER.md").read_text(encoding="utf-8")
+        self.assertIn("FFprobe", guide)
+        self.assertIn("source hashes/provenance", guide)
+        self.assertIn("Unwatermarked", guide)
+        self.assertIn("not independently verify remote sources", guide)
+        self.assertIn("not a deployed web application", guide)
 
 
 if __name__ == "__main__":
