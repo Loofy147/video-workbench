@@ -16,7 +16,7 @@ __pycache__/
 .venv/
 venv/
 
-# JavaScript / frontend (reserved for later)
+# JavaScript / frontend build outputs
 node_modules/
 dist/
 build/
@@ -29,7 +29,8 @@ coverage/
 .vscode/
 *.swp
 
-# Generated media, datasets, model artifacts, and caches
+# Local user projects and generated data
+.workbench/
 media/
 assets/private/
 datasets/
