@@ -199,6 +199,16 @@ class ProjectPersistenceTests(unittest.TestCase):
         app.update_project(project_id, edited)
         self.assertEqual(app.get_project(project_id)["project"]["version"], 2)
 
+    def test_draft_pack_fails_closed_when_rendered_artifacts_are_missing(self):
+        created = app.create_project(valid_plan())
+        project_id = created["project"]["id"]
+        record = app._read_record(project_id)
+        record["state"] = "rendered_draft"
+        record["render_result"] = {"output": {"sha256": "0" * 64}}
+        app._write_json(self.root / project_id / "project.json", record)
+        with self.assertRaisesRegex(RuntimeError, "MP4 or provenance sidecar is missing"):
+            app.build_draft_pack(project_id)
+
     def test_render_failure_is_recorded(self):
         created = app.create_project(valid_plan())
         project_id = created["project"]["id"]
