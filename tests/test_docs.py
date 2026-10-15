@@ -68,6 +68,10 @@ class RepositoryFoundationTests(unittest.TestCase):
         self.assertIn("Broader outcome families — not all MVP scope", brief)
         self.assertIn("project scopes", brief)
         self.assertIn("stub must never be represented as actual model execution", brief)
+        self.assertIn("Contribution Network / its current ContribQuest prototype", brief)
+        self.assertIn("there is no escrow, payment processing, or guaranteed payout", brief)
+        self.assertIn("XP is not independently validated as a measure of skill", brief)
+        self.assertIn("not as proven production-ready infrastructure", brief)
 
 
 if __name__ == "__main__":
