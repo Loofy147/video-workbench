@@ -95,6 +95,9 @@ class PlanContractTests(unittest.TestCase):
         raw["claims_evidence"] = [{"claim": "Mystery claim", "status": "approved", "evidence": "some reference"}]
         with self.assertRaisesRegex(ValueError, "status must be one of"):
             app.normalize_plan(raw)
+        raw["claims_evidence"] = [{"claim": "Malformed status", "status": []}]
+        with self.assertRaisesRegex(ValueError, "status must be one of"):
+            app.normalize_plan(raw)
         raw["claims_evidence"] = [{"claim": f"Claim {index}", "status": "unverified"} for index in range(31)]
         with self.assertRaisesRegex(ValueError, "at most 30"):
             app.normalize_plan(raw)
