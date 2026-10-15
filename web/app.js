@@ -9,6 +9,7 @@
   ];
   const form = document.querySelector("#campaign-form");
   const sceneList = document.querySelector("#scene-list");
+  const claimList = document.querySelector("#claim-list");
   const projectList = document.querySelector("#project-list");
   const message = document.querySelector("#app-message");
   const saveButton = document.querySelector("#save-project");
@@ -45,7 +46,7 @@
     document.querySelector("#new-project").disabled = value;
     document.querySelector("#refresh-projects").disabled = value;
     document.querySelector("#add-scene").disabled = value || sceneList.children.length >= 8;
-    for (const control of form.querySelectorAll("input, textarea, button")) control.disabled = value;
+    for (const control of form.querySelectorAll("input, textarea, select, button")) control.disabled = value;
     saveButton.disabled = value;
     renderButton.disabled = value || !selectedProjectId;
   }
@@ -131,6 +132,87 @@
     document.querySelector("#add-scene").disabled = sceneList.children.length >= 8 || busy;
   }
 
+  function addClaim(item = {}) {
+    if (claimList.children.length >= 30) return;
+    const card = document.createElement("section");
+    card.className = "claim-card";
+    const header = document.createElement("div");
+    header.className = "claim-card-header";
+    const title = document.createElement("h3");
+    title.textContent = "Claim " + (claimList.children.length + 1);
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "remove-claim";
+    remove.textContent = "Remove";
+    remove.addEventListener("click", () => {
+      card.remove();
+      renumberClaims();
+    });
+    header.append(title, remove);
+
+    const grid = document.createElement("div");
+    grid.className = "claim-grid";
+    const claimInput = document.createElement("textarea");
+    claimInput.rows = 2;
+    claimInput.maxLength = 600;
+    claimInput.required = true;
+    claimInput.id = "claim-text-" + crypto.randomUUID();
+    claimInput.value = item.claim || "";
+
+    const status = document.createElement("select");
+    status.required = true;
+    status.id = "claim-status-" + crypto.randomUUID();
+    const statuses = [
+      ["documented-source", "Documented source"],
+      ["direct-observation", "Direct observation"],
+      ["inference", "Inference"],
+      ["unverified", "Unverified"]
+    ];
+    for (const [value, label] of statuses) {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = label;
+      status.append(option);
+    }
+    status.value = statuses.some(([value]) => value === item.status) ? item.status : "unverified";
+
+    const evidence = document.createElement("textarea");
+    evidence.rows = 2;
+    evidence.maxLength = 1000;
+    evidence.id = "claim-evidence-" + crypto.randomUUID();
+    evidence.value = item.evidence || "";
+    const claimField = makeField("Claim text", claimInput);
+    const statusField = makeField("Evidence status", status);
+    const evidenceField = makeField("Evidence URL or observation note", evidence, {
+      hint: "Required for documented sources and direct observations."
+    });
+    grid.append(claimField, statusField, evidenceField);
+    card.append(header, grid);
+    claimList.append(card);
+    status.addEventListener("change", () => updateClaimEvidenceRequirement(card));
+    updateClaimEvidenceRequirement(card);
+    renumberClaims();
+  }
+
+  function updateClaimEvidenceRequirement(card) {
+    const status = card.querySelector("select");
+    const evidence = card.querySelectorAll("textarea")[1];
+    const required = ["documented-source", "direct-observation"].includes(status.value);
+    evidence.required = required;
+    evidence.setAttribute("aria-required", required ? "true" : "false");
+  }
+
+  function renumberClaims() {
+    Array.from(claimList.children).forEach((card, index) => {
+      const number = index + 1;
+      card.querySelector("h3").textContent = "Claim " + number;
+      const remove = card.querySelector(".remove-claim");
+      remove.setAttribute("aria-label", "Remove claim " + number);
+      remove.disabled = busy;
+    });
+    document.querySelector("#add-claim").disabled = claimList.children.length >= 30 || busy;
+  }
+
   function collectPlan() {
     const data = new FormData(form);
     const scenes = Array.from(sceneList.children).map(card => ({
@@ -146,6 +228,11 @@
       objective: String(data.get("objective") || "").trim(),
       differentiators: String(data.get("differentiators") || "").trim(),
       call_to_action: String(data.get("call_to_action") || "").trim(),
+      claims_evidence: Array.from(claimList.children).map(card => ({
+        claim: card.querySelectorAll("textarea")[0].value.trim(),
+        status: card.querySelector("select").value,
+        evidence: card.querySelectorAll("textarea")[1].value.trim()
+      })),
       scenes
     };
   }
@@ -159,6 +246,9 @@
     form.elements.call_to_action.value = plan.call_to_action || "";
     sceneList.replaceChildren();
     (plan.scenes && plan.scenes.length ? plan.scenes : DEFAULT_SCENES).forEach((scene, index) => addScene(scene, index));
+    claimList.replaceChildren();
+    (Array.isArray(plan.claims_evidence) ? plan.claims_evidence : []).forEach(item => addClaim(item));
+    renumberClaims();
   }
 
   function setProject(data) {
@@ -293,6 +383,10 @@
 
   document.querySelector("#new-project").addEventListener("click", resetProject);
   document.querySelector("#refresh-projects").addEventListener("click", () => refreshProjects().catch(error => showMessage(error.message, "error")));
+  document.querySelector("#add-claim").addEventListener("click", () => {
+    if (claimList.children.length < 30 && !busy) addClaim({ claim: "", status: "unverified", evidence: "" });
+  });
+
   document.querySelector("#add-scene").addEventListener("click", () => {
     if (sceneList.children.length < 8 && !busy) addScene({ title: "", body: "", duration_seconds: 3, background: "#101b2d" });
   });
