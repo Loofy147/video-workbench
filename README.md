@@ -14,6 +14,7 @@ A standalone, internal company production workbench for turning business goals a
 - [Local browser workbench](docs/LOCAL_WORKBENCH.md) — startup, end-to-end use, local data handling, security boundary, and current gaps.
 - [Licensing and provenance](docs/LICENSING_AND_PROVENANCE.md) — third-party/model intake and asset-handling policy.
 - [FastVideo selective-reuse audit](docs/REUSE_AUDIT.md) — evidence-backed decision not to copy FastVideo Studio or Dreamverse.
+- [Open-source foundation audit](docs/OPEN_SOURCE_FOUNDATION_AUDIT.md) — strict reuse gate and decisions for Everything, Puter, OpenCut, and ArtCraft.
 - [Deterministic renderer](docs/RENDERER.md) — campaign manifest, FFmpeg/FFprobe validation, source provenance, and release gates.
 - [License decisions](docs/LICENSING_DECISIONS.md) — code license, content-rights boundaries, and separate project policies.
 - [Notice and rights scope](NOTICE.md) — current unlicensed status and boundaries for software, documentation, and media rights.
