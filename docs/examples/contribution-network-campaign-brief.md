@@ -95,21 +95,50 @@ Do not state or visually imply any of the following without new, direct evidence
 - Fake contributor names, testimonials, customer logos, bounty values, payment events, success dashboards, acceptance states, or usage metrics presented as real.
 - Any real person's identity, contribution data, private project information, or screenshot used without appropriate permission.
 
-## 7. Public landing page inspection (read-only, 2026-10-15)
+## 7. Public landing page inspection (read-only, 2026-10-16)
 
-The public prototype URL was fetched with JavaScript-rendered page extraction. This confirms only that the landing page was accessible and exposes the following rendered text; it does **not** verify interactive behavior, account-specific views, persistence, or a full contributor/owner workflow.
+**Method:** Fresh JavaScript-rendered page extraction plus a read-only browser walk of the public site. No sign-in, form submission, data creation, edit, contribution submission, review, GitHub connection, or persistent mutation was performed.
 
-Observed public-page elements include:
-- A displayed “9” under “Work ready to pick up”.
-- Two “Community showcase” examples, one with “$220 offered” for a UX review and one with “$140 offered” for a translation task.
-- An accepted-work display of “0 accepted / 2 to go”, an XP summary, and the text “50 XP per accepted contribution”.
-- Open Graph/share-preview metadata whose description currently reads: “Fix the acceptance-criteria count in the PostHog event properties so multiple newline-separated criteria are counted correctly.”
+### What was visible
 
-**Release implications:**
-- Treat the counts, showcase records, and dollar amounts as unverified displayed content. Do not present them as real inventory, paid transactions, real user outcomes, customer traction, or proof that an offer will be paid. The canonical README says the current app has listings only and does not implement payment processing, escrow, or guaranteed payouts.
-- Do not use the showcase records as campaign footage unless the owner confirms whether they are seeded/demo data and approves that use. If used for product testing, label synthetic records in the edit.
-- The share-preview description appears to be engineering-task text rather than approved public marketing copy. It must be reviewed and replaced with owner-approved metadata before public promotion or link sharing.
-- The live interactive contribution/review lifecycle remains unverified. The next verification requires actual scenarios with separate contributor and bounty-owner identities, with observed pass/fail outcomes recorded.
+- The public landing page loaded at the [current prototype URL](https://contribquest-lygj1x.v2.appdeploy.ai/).
+- The hero reads “Your contribution HQ” and “SMALL CONTRIBUTIONS. REAL PROOF.”
+- Public counters show **9** open bounties. XP, accepted-work, and in-review values are blank/dash when signed out; the XP caption says “Sign in to track XP”.
+- The “High-signal opportunities” area displays two cards marked **Example**, attributed to “Community showcase”: a UX review showing **$220 offered**, and a translation task showing **$140 offered**.
+- A “Reputation path” section shows “0 accepted / 2 to go” and the page says “50 XP per accepted contribution”.
+- Public navigation includes “Explore bounties”, “Sign in to contribute”, “Post a bounty”, search, category filtering, and bounty-type filtering.
+
+### What the read-only browser walk confirmed
+
+| Check | Observation | Evidence boundary |
+|---|---|---|
+| Open landing page | Loaded successfully | Confirms public page availability at inspection time only |
+| Open “Explore bounties” | Navigated to a “The Bounty Board” view with search and filter controls | Individual bounty detail cards and live criteria were not fully inspected in this run |
+| Open “My contributions” | View displayed a sign-in-gated/empty state | No private contribution record or persistence was tested |
+| Open “Manage work” | View displayed a sign-in-gated/empty state | Owner review and permission checks remain untested |
+| Open “Goals & levels” | View displayed a sign-in-gated/empty state | Account-specific XP/level logic remains untested |
+| Open “Leaderboard” | View displayed a sign-in-gated/empty state | Real ranking data and authorization remain untested |
+| Open “Account & integrations” | View displayed a sign-in-gated/empty state | Authentication, GitHub connection, and integration controls remain untested |
+
+The browser walk did not sign in or submit data, and it did not open individual bounty detail screens. The app repository's QA manifest still requires real browser scenarios with separate owner and contributor identities for contribution creation, review, revision, and exactly-once XP. Those core lifecycle scenarios remain **not verified**.
+
+### Important findings for the campaign
+
+1. **Do not treat the example offer cards as real marketplace traction or processed money.** They carry an “Example” label and a “Community showcase” byline, but their origin and commercial status were not independently verified. The application README explicitly says paid entries are listings; it has no escrow, payment processing, or guaranteed payout.
+2. **Public board is not proof of a completed contribution lifecycle.** Landing page and navigation are public; account-specific workspace routes are gated without authentication. Do not narrate the review, revision, or XP path as a live demonstrated behavior until it has been exercised and recorded with the required roles.
+3. **Current Open Graph metadata is not suitable as approved marketing copy.** At this inspection, the rendered page's Open Graph/Twitter description read: “Add a private Project 0 contribution ledger to ContribQuest for recording founder/operator contributions and linking them to GitHub or other work evidence. Only low-risk, non-sensitive work can receive self-verification XP, recorded idempotently and separately from community accepted-work gating. Keep the existing bounty, review, revision, GitHub integration and identity controls intact.” This reads as an implementation task, not a public product description. The checked-in `index.html` does not contain this Open Graph description; its actual source appears to be supplied by the deployed platform or deployment metadata and must be traced before editing.
+4. **Do not conflate documented behavior with observed execution.** The canonical README and acceptance-protocol document describe criteria snapshots, per-criterion review, written rationale, accepted/rejected/changes-requested outcomes, revision history, and XP rules. This inspection did not test these authenticated backend transitions, data isolation, retry behavior, or exactly-once rewards.
+5. **No full video-workbench run was reproduced in this environment.** A fresh Git clone attempt was blocked because the execution environment could not resolve `github.com`. Prior evidence recorded for the merged workbench includes CI run #76 passing 37 tests and HTTP smoke checks for real MP4 rendering, artifact downloads, versioning, claim persistence, ZIP export, checksum matching, and cross-origin mutation rejection. A new clean-start run is still desirable when a network-enabled runtime is available; this failure is an environment blocker, not evidence of a product defect.
+
+### Required next evidence
+
+- [ ] Owner-approved decision on audience, CTA, publish destination, and visual identity.
+- [ ] Live authenticated scenarios with separate contributor and bounty-owner identities; attach pass/fail notes for each of the five QA manifest scenarios.
+- [ ] Inspect one public bounty's actual details/criteria and verify the visible copy against the current source.
+- [ ] Trace and replace the deployed Open Graph/Twitter description with owner-approved messaging; re-fetch it after deployment.
+- [ ] Verify whether the displayed example offers are seeded examples and preserve an explicit example/demo label if so.
+- [ ] Repeat a clean-start local workbench run and retain the exact project version, rendered MP4, sidecar, and same-version draft ZIP as acceptance evidence.
+- [ ] Only then consider changing the draft brief to describe those authenticated flows as demonstrated.
 
 ## 8. Footage and asset plan
 
